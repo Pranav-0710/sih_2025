@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,11 +37,20 @@ const TripGenie = () => {
     location: ''
   });
   const { toast } = useToast();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const interestOptions = [
     'Heritage Sites', 'Nature & Wildlife', 'Adventure', 'Tribal Culture', 
     'Photography', 'Spiritual', 'Food & Cuisine', 'Festivals'
   ];
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
@@ -216,7 +225,7 @@ const TripGenie = () => {
 
           {/* Chat Interface */}
           <div className="lg:col-span-3">
-            <Card className="h-[600px] flex flex-col">
+            <Card className="flex flex-col min-h-[400px]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-primary" />
@@ -226,7 +235,7 @@ const TripGenie = () => {
               
               <CardContent className="flex-1 flex flex-col">
                 {/* Messages */}
-                <div className="flex-1 space-y-4 overflow-y-auto mb-4">
+                <div className="flex-1 space-y-4 overflow-y-auto mb-4 p-2 max-h-[calc(100vh-300px)]">
                   {messages.map((message) => (
                     <div
                       key={message.id}
@@ -256,6 +265,7 @@ const TripGenie = () => {
                       </div>
                     </div>
                   )}
+                  <div ref={messagesEndRef} />
                 </div>
 
                 {/* Input */}

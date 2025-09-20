@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles, MapPin, Calendar } from "lucide-react";
 import heroImage from "@/assets/hero-jharkhand.jpg";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+
+  const navigate = useNavigate();
+
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -37,7 +41,7 @@ const HeroSection = () => {
               <Sparkles className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
               Start Your Journey
             </Button>
-            <Button variant="outline" size="lg" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
+            <Button variant="outline" size="lg" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20" onClick={() => navigate('/heritage')}>
               <MapPin className="h-5 w-5 mr-2" />
               Explore Heritage Sites
             </Button>

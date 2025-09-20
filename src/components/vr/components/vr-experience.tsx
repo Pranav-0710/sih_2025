@@ -121,7 +121,7 @@ export function VRExperience() {
           alt="Jharkhand Landscape"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-white/40" />
 
         {/* Content */}
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
@@ -172,7 +172,7 @@ export function VRExperience() {
       </section>
 
       {/* Location Preview Cards */}
-      <section className="py-20 px-4 bg-secondary/20">
+      <section className="py-20 px-4 bg-white/20">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-balance">Explore Iconic Destinations</h2>
           <p className="text-xl text-muted-foreground text-center mb-16 max-w-3xl mx-auto text-pretty">

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import Navigation from "@/components/Navigation";
 
 const bookingData = [
   { month: 'January', bookings: 65, revenue: 12000 },
@@ -125,7 +126,10 @@ const Dashboard = () => {
   };
 
   return (
+    <>
+    <Navigation />
     <div className="container mx-auto p-4">
+      
       <h1 className="text-3xl font-bold mb-4">Bookings Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <Card>
@@ -329,6 +333,7 @@ const Dashboard = () => {
         </Card>
       </div>
     </div>
+    </>
   );
 };
 

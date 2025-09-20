@@ -3,9 +3,18 @@ import { MapPin, Menu, X, LogOut, Brain } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [exploreDropdownOpen, setExploreDropdownOpen] = useState(false);
+  const [dashboardDropdownOpen, setDashboardDropdownOpen] = useState(false);
+  const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -35,54 +44,53 @@ const Navigation = () => {
             >
               Home
             </button>
-            <button 
-              onClick={() => navigate('/heritage')}
-              className="text-foreground hover:text-primary transition-smooth"
-            >
-              Heritage
-            </button>
-            <button 
-              onClick={() => navigate('/trip-genie')}
-              className="text-foreground hover:text-primary transition-smooth"
-            >
-              Trip Genie
-            </button>
-            <button 
-              onClick={() => navigate('/community')}
-              className="text-foreground hover:text-primary transition-smooth"
-            >
-              Community
-            </button>
-            <button 
-              onClick={() => navigate('/bookings')}
-              className="text-foreground hover:text-primary transition-smooth"
-            >
-              Bookings
-            </button>
-            <button 
-              onClick={() => navigate('/emergency')}
-              className="text-foreground hover:text-primary transition-smooth"
-            >
-              Emergency
-            </button>
-            <button 
-              onClick={() => navigate('/sentiment-analysis')}
-              className="text-foreground hover:text-primary transition-smooth"
-            >
-              Sentiment Analysis
-            </button>
-            <button 
-              onClick={() => navigate('/dashboard')}
-              className="text-foreground hover:text-primary transition-smooth"
-            >
-              Dashboard
-            </button>
-            <button 
-              onClick={() => navigate('/ar-vr-experience')}
-              className="text-foreground hover:text-primary transition-smooth"
-            >
-              AR/VR Experience
-            </button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="text-foreground hover:text-primary transition-smooth"
+                >
+                  Explore
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuItem onClick={() => navigate('/heritage')}>Heritage</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/ar-vr-experience')}>AR/VR Experience</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/trip-genie')}>Trip Genie</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="text-foreground hover:text-primary transition-smooth"
+                >
+                  Dashboard
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuItem onClick={() => navigate('/dashboard')}>Dashboard</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/bookings')}>Bookings</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/community')}>Community</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="text-foreground hover:text-primary transition-smooth"
+                >
+                  More
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuItem onClick={() => navigate('/sentiment-analysis')}>Sentiment Analysis</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/emergency')}>Emergency</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Desktop Auth Buttons */}
@@ -130,78 +138,51 @@ const Navigation = () => {
               >
                 Home
               </button>
-              <button
-                onClick={() => {
-                  navigate('/heritage');
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-              >
-                Heritage
-              </button>
-              <button
-                onClick={() => {
-                  navigate('/trip-genie');
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-              >
-                Trip Genie
-              </button>
-              <button
-                onClick={() => {
-                  navigate('/community');
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-              >
-                Community
-              </button>
-              <button
-                onClick={() => {
-                  navigate('/bookings');
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-              >
-                Bookings
-              </button>
-              <button
-                onClick={() => {
-                  navigate('/emergency');
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-              >
-                Emergency
-              </button>
-              <button
-                onClick={() => {
-                  navigate('/sentiment-analysis');
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-              >
-                Sentiment Analysis
-              </button>
-              <button
-                onClick={() => {
-                  navigate('/dashboard');
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => {
-                  navigate('/ar-vr-experience');
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-              >
-                AR/VR Experience
-              </button>
+
+                            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
+                  >
+                    Explore
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuItem onClick={() => { navigate('/heritage'); setIsMenuOpen(false); }}>Heritage</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => { navigate('/ar-vr-experience'); setIsMenuOpen(false); }}>AR/VR Experience</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => { navigate('/trip-genie'); setIsMenuOpen(false); }}>Trip Genie</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+                            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
+                  >
+                    Dashboard
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuItem onClick={() => { navigate('/dashboard'); setIsMenuOpen(false); }}>Dashboard</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => { navigate('/bookings'); setIsMenuOpen(false); }}>Bookings</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => { navigate('/community'); setIsMenuOpen(false); }}>Community</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+                            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
+                  >
+                    More
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuItem onClick={() => { navigate('/sentiment-analysis'); setIsMenuOpen(false); }}>Sentiment Analysis</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => { navigate('/emergency'); setIsMenuOpen(false); }}>Emergency</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <div className="border-t border-border pt-4 pb-3">
                 <div className="flex flex-col space-y-2">
                   {user ? (
@@ -251,6 +232,6 @@ const Navigation = () => {
       </div>
     </nav>
   );
-};
+}
 
 export default Navigation;
