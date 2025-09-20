@@ -45,52 +45,67 @@ const Navigation = () => {
               Home
             </button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="text-foreground hover:text-primary transition-smooth"
-                >
-                  Explore
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuItem onClick={() => navigate('/heritage')}>Heritage</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/ar-vr-experience')}>AR/VR Experience</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/trip-genie')}>Trip Genie</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div
+              onMouseLeave={() => setExploreDropdownOpen(false)}
+            >
+              <DropdownMenu open={exploreDropdownOpen} onOpenChange={setExploreDropdownOpen} modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-foreground hover:text-primary transition-smooth"
+                    onMouseEnter={() => setExploreDropdownOpen(true)}
+                  >
+                    Explore
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuItem onClick={() => navigate('/heritage')}>Heritage</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/ar-vr-experience')}>AR/VR Experience</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/trip-genie')}>Trip Genie</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="text-foreground hover:text-primary transition-smooth"
-                >
-                  Dashboard
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuItem onClick={() => navigate('/dashboard')}>Dashboard</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/bookings')}>Bookings</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/community')}>Community</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div
+              onMouseLeave={() => setDashboardDropdownOpen(false)}
+            >
+              <DropdownMenu open={dashboardDropdownOpen} onOpenChange={setDashboardDropdownOpen} modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-foreground hover:text-primary transition-smooth"
+                    onMouseEnter={() => setDashboardDropdownOpen(true)}
+                  >
+                    Dashboard
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>Dashboard</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/bookings')}>Bookings</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/community')}>Community</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="text-foreground hover:text-primary transition-smooth"
-                >
-                  More
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuItem onClick={() => navigate('/sentiment-analysis')}>Sentiment Analysis</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/emergency')}>Emergency</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div
+              onMouseLeave={() => setMoreDropdownOpen(false)}
+            >
+              <DropdownMenu open={moreDropdownOpen} onOpenChange={setMoreDropdownOpen} modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="text-foreground hover:text-primary transition-smooth"
+                    onMouseEnter={() => setMoreDropdownOpen(true)}
+                  >
+                    More
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  <DropdownMenuItem onClick={() => navigate('/sentiment-analysis')}>Sentiment Analysis</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/emergency')}>Emergency</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
 
           {/* Desktop Auth Buttons */}
@@ -139,49 +154,66 @@ const Navigation = () => {
                 Home
               </button>
 
-                            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-                  >
-                    Explore
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuItem onClick={() => { navigate('/heritage'); setIsMenuOpen(false); }}>Heritage</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => { navigate('/ar-vr-experience'); setIsMenuOpen(false); }}>AR/VR Experience</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => { navigate('/trip-genie'); setIsMenuOpen(false); }}>Trip Genie</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                            <div
+                onMouseLeave={() => setExploreDropdownOpen(false)}
+              >
+                <DropdownMenu open={exploreDropdownOpen} onOpenChange={setExploreDropdownOpen} modal={false}>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
+                      onMouseEnter={() => setExploreDropdownOpen(true)}
+                    >
+                      Explore
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuItem onClick={() => { navigate('/heritage'); setIsMenuOpen(false); }}>Heritage</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { navigate('/ar-vr-experience'); setIsMenuOpen(false); }}>AR/VR Experience</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { navigate('/trip-genie'); setIsMenuOpen(false); }}>Trip Genie</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
-                            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-                  >
-                    Dashboard
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuItem onClick={() => { navigate('/dashboard'); setIsMenuOpen(false); }}>Dashboard</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => { navigate('/bookings'); setIsMenuOpen(false); }}>Bookings</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => { navigate('/community'); setIsMenuOpen(false); }}>Community</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                            <div
+                onMouseLeave={() => setDashboardDropdownOpen(false)}
+              >
+                <DropdownMenu open={dashboardDropdownOpen} onOpenChange={setDashboardDropdownOpen} modal={false}>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
+                      onMouseEnter={() => setDashboardDropdownOpen(true)}
+                    >
+                      Dashboard
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuItem onClick={() => { navigate('/dashboard'); setIsMenuOpen(false); }}>Dashboard</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { navigate('/bookings'); setIsMenuOpen(false); }}>Bookings</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { navigate('/community'); setIsMenuOpen(false); }}>Community</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
-                            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
-                  >
-                    More
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuItem onClick={() => { navigate('/sentiment-analysis'); setIsMenuOpen(false); }}>Sentiment Analysis</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => { navigate('/emergency'); setIsMenuOpen(false); }}>Emergency</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+
+
+              <div
+                onMouseLeave={() => setMoreDropdownOpen(false)}
+              >
+                <DropdownMenu open={moreDropdownOpen} onOpenChange={setMoreDropdownOpen} modal={false}>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-smooth"
+                      onMouseEnter={() => setMoreDropdownOpen(true)}
+                    >
+                      More
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuItem onClick={() => { navigate('/sentiment-analysis'); setIsMenuOpen(false); }}>Sentiment Analysis</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { navigate('/emergency'); setIsMenuOpen(false); }}>Emergency</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
               <div className="border-t border-border pt-4 pb-3">
                 <div className="flex flex-col space-y-2">
