@@ -10,6 +10,7 @@ import Navigation from '@/components/Navigation';
 import { useToast } from '@/hooks/use-toast';
 import BetlaNationalPark from '@/assets/betla_national_park.jpg';
 import BaidyanathTemple from '@/assets/baidyanath_temple.jpg';
+import Weather from './Weather';
 
 interface HeritageSite {
   id: string;
@@ -200,6 +201,11 @@ const Heritage = () => {
                   </div>
                 </div>
                 
+                <div className="border-t pt-3">
+                  <h4 className="font-semibold text-sm mb-2">Weather</h4>
+                  <Weather lat={site.latitude} lon={site.longitude} />
+                </div>
+
                 <div className="flex gap-2">
                   <Button variant="heritage" size="sm" className="flex-1">
                     Learn More
