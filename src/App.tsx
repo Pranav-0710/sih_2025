@@ -18,6 +18,8 @@ import VRExperiencePage from "./pages/VRExperience";
 import NotFound from "./pages/NotFound";
 import sosIcon from "@/assets/sos.png";
 
+import AdminRoute from "./components/AdminRoute";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -50,8 +52,10 @@ const MainLayout = () => {
         <Route path="/community" element={<Community />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/emergency" element={<Emergency />} />
-        <Route path="/sentiment-analysis" element={<SentimentAnalysis />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<AdminRoute />}>
+          <Route path="/sentiment-analysis" element={<SentimentAnalysis />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
         <Route path="/ar-vr-experience" element={<VRExperiencePage />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />

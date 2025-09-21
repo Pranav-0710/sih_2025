@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MapPin, Mail, Lock, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 
 const Auth = () => {
@@ -34,6 +35,17 @@ const Auth = () => {
     e.preventDefault();
     setIsLoading(true);
     await signUp(email, password, fullName);
+    setIsLoading(false);
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
     setIsLoading(false);
   };
 
@@ -105,6 +117,24 @@ const Auth = () => {
                     {isLoading ? 'Signing in...' : 'Sign In'}
                   </Button>
                 </form>
+                <div className="relative my-4">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+                <Button
+                  onClick={handleGoogleSignIn}
+                  className="w-full"
+                  variant="outline"
+                  disabled={isLoading}
+                >
+                  Sign in with Google
+                </Button>
               </TabsContent>
               
               <TabsContent value="signup" className="space-y-4">
@@ -164,8 +194,29 @@ const Auth = () => {
                     {isLoading ? 'Creating account...' : 'Create Account'}
                   </Button>
                 </form>
+                <div className="relative my-4">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+                <Button
+                  onClick={handleGoogleSignIn}
+                  className="w-full"
+                  variant="outline"
+                  disabled={isLoading}
+                >
+                  Sign up with Google
+                </Button>
               </TabsContent>
             </Tabs>
+            <p className="mt-4 text-center text-sm text-muted-foreground">
+              Admin users can access additional features after logging in.
+            </p>
           </CardContent>
         </Card>
       </div>

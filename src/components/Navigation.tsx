@@ -16,7 +16,7 @@ const Navigation = () => {
   const [exploreDropdownOpen, setExploreDropdownOpen] = useState(false);
   const [dashboardDropdownOpen, setDashboardDropdownOpen] = useState(false);
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, signOut, role } = useAuth();
   const navigate = useNavigate();
   const { toggleLargeFont, isLargeFont } = useFontSize();
 
@@ -61,27 +61,29 @@ const Navigation = () => {
                   <DropdownMenuItem onClick={() => navigate('/heritage')}>Heritage</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate('/ar-vr-experience')}>AR/VR Experience</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate('/trip-genie')}>Trip Genie</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            <div>
-              <DropdownMenu open={dashboardDropdownOpen} onOpenChange={setDashboardDropdownOpen} modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="text-foreground hover:text-primary transition-smooth"
-                  >
-                    Dashboard
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>Dashboard</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/bookings')}>Bookings</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate('/community')}>Community</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+
+            {role === 'admin' && (
+              <div>
+                <DropdownMenu open={dashboardDropdownOpen} onOpenChange={setDashboardDropdownOpen} modal={false}>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="text-foreground hover:text-primary transition-smooth"
+                    >
+                      Dashboard
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuItem onClick={() => navigate('/dashboard')}>Dashboard</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/bookings')}>Bookings</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )}
 
             <div>
               <DropdownMenu open={moreDropdownOpen} onOpenChange={setMoreDropdownOpen} modal={false}>
@@ -94,7 +96,9 @@ const Navigation = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
-                  <DropdownMenuItem onClick={() => navigate('/sentiment-analysis')}>Sentiment Analysis</DropdownMenuItem>
+                  {role === 'admin' && (
+                    <DropdownMenuItem onClick={() => navigate('/sentiment-analysis')}>Sentiment Analysis</DropdownMenuItem>
+                  )}
                   <DropdownMenuItem onClick={() => navigate('/emergency')}>Emergency</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -151,7 +155,7 @@ rounded-md transition-smooth"
                 Home
               </button>
 
-                            <div>
+              <div>
                 <DropdownMenu open={exploreDropdownOpen} onOpenChange={setExploreDropdownOpen} modal={false}>
                   <DropdownMenuTrigger asChild>
                     <button
@@ -168,32 +172,32 @@ hover:text-accent-foreground rounded-md transition-smooth"
 Experience</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => { navigate('/trip-genie'); setIsMenuOpen(false); }}>Trip
 Genie</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-
-                            <div>
-                <DropdownMenu open={dashboardDropdownOpen} onOpenChange={setDashboardDropdownOpen} modal={false}>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent
-hover:text-accent-foreground rounded-md transition-smooth"
-                    >
-                      Dashboard
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuItem onClick={() => { navigate('/dashboard'); setIsMenuOpen(false);
-}}>Dashboard</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => { navigate('/bookings'); setIsMenuOpen(false);
-}}>Bookings</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => { navigate('/community'); setIsMenuOpen(false);
 }}>Community</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
 
-
+              {role === 'admin' && (
+                <div>
+                  <DropdownMenu open={dashboardDropdownOpen} onOpenChange={setDashboardDropdownOpen} modal={false}>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent
+hover:text-accent-foreground rounded-md transition-smooth"
+                      >
+                        Dashboard
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuItem onClick={() => { navigate('/dashboard'); setIsMenuOpen(false);
+}}>Dashboard</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => { navigate('/bookings'); setIsMenuOpen(false);
+}}>Bookings</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              )}
 
               <div>
                 <DropdownMenu open={moreDropdownOpen} onOpenChange={setMoreDropdownOpen} modal={false}>
@@ -206,8 +210,10 @@ hover:text-accent-foreground rounded-md transition-smooth"
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
-                    <DropdownMenuItem onClick={() => { navigate('/sentiment-analysis'); setIsMenuOpen(false); }}>Sentiment
+                    {role === 'admin' && (
+                      <DropdownMenuItem onClick={() => { navigate('/sentiment-analysis'); setIsMenuOpen(false); }}>Sentiment
 Analysis</DropdownMenuItem>
+                    )}
                     <DropdownMenuItem onClick={() => { navigate('/emergency'); setIsMenuOpen(false);
 }}>Emergency</DropdownMenuItem>
                   </DropdownMenuContent>

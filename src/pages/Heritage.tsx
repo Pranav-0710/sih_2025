@@ -1,252 +1,301 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MapPin, Clock, IndianRupee, Search, Filter, Star } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import Navigation from '@/components/Navigation';
-import { useToast } from '@/hooks/use-toast';
-import BetlaNationalPark from '@/assets/betla_national_park.png';
-import BaidyanathTemple from '@/assets/baidyanath_temple.png';
-import Weather from './Weather';
+// src/pages/heritage.tsx
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { X, Play, StopCircle } from "lucide-react";
 
-interface HeritageSite {
-  id: string;
-  name: string;
-  description: string;
-  location: string;
-  category: string;
-  latitude: number;
-  longitude: number;
-  historical_significance: string;
-  best_time_to_visit: string;
-  entry_fee: number;
-  images: any;
-  audio_story_url?: string;
-  virtual_tour_url?: string;
-}
+const spots = [
+  {
+    name: "Baidhyanath Temple",
+    top: "45%",
+    left: "60%",
+    img: "/images/spots/baidyanath.jpg",
+    desc: "One of the 12 Jyotirlingas, an important pilgrimage site in Deoghar.",
+    wiki: "https://en.wikipedia.org/wiki/Baidyanath_Temple",
+    category: "Temple",
+  },
+  {
+    name: "Netarhat",
+    top: "30%",
+    left: "40%",
+    img: "/images/spots/netarhat.jpg",
+    desc: "Known as the Queen of Chotanagpur, famous for sunrise and sunset views.",
+    wiki: "https://en.wikipedia.org/wiki/Netarhat",
+    category: "Nature",
+  },
+  {
+    name: "Parasnath Hills",
+    top: "20%",
+    left: "55%",
+    img: "/images/spots/parasnath.jpg",
+    desc: "Highest peak in Jharkhand, a major Jain pilgrimage site.",
+    wiki: "https://en.wikipedia.org/wiki/Parasnath",
+    category: "Nature",
+  },
+  {
+    name: "Hazaribagh National Park",
+    top: "25%",
+    left: "50%",
+    img: "/images/spots/hazaribagh.jpg",
+    desc: "Wildlife sanctuary known for tigers, leopards, and rich flora.",
+    wiki: "https://en.wikipedia.org/wiki/Hazaribagh_National_Park",
+    category: "Park",
+  },
+  {
+    name: "Betla National Park",
+    top: "70%",
+    left: "40%",
+    img: "/images/spots/betla.jpg",
+    desc: "Part of the Palamau Tiger Reserve, rich in wildlife and history.",
+    wiki: "https://en.wikipedia.org/wiki/Betla_National_Park",
+    category: "Park",
+  },
+  {
+    name: "Jagannath Temple, Ranchi",
+    top: "55%",
+    left: "45%",
+    img: "/images/spots/jagannath.jpg",
+    desc: "A 17th-century temple resembling Puri's Jagannath Temple.",
+    wiki: "https://en.wikipedia.org/wiki/Jagannath_Temple,_Ranchi",
+    category: "Temple",
+  },
+  {
+    name: "Hundru Falls",
+    top: "60%",
+    left: "50%",
+    img: "/images/spots/hundru.jpg",
+    desc: "A spectacular 98m waterfall on the Subarnarekha River.",
+    wiki: "https://en.wikipedia.org/wiki/Hundru_Falls",
+    category: "Waterfall",
+  },
+  {
+    name: "Dassam Falls",
+    top: "58%",
+    left: "52%",
+    img: "/images/spots/dassam.jpg",
+    desc: "A beautiful waterfall near Ranchi, popular picnic spot.",
+    wiki: "https://en.wikipedia.org/wiki/Dassam_Falls",
+    category: "Waterfall",
+  },
+  {
+    name: "Jonha Falls",
+    top: "62%",
+    left: "53%",
+    img: "/images/spots/jonha.jpg",
+    desc: "Also known as Gautamdhara, falls named after Lord Buddha.",
+    wiki: "https://en.wikipedia.org/wiki/Jonha_Falls",
+    category: "Waterfall",
+  },
+  {
+    name: "Shikharji",
+    top: "22%",
+    left: "58%",
+    img: "/images/spots/shikharji.jpg",
+    desc: "Most important Jain pilgrimage site, located on Parasnath Hill.",
+    wiki: "https://en.wikipedia.org/wiki/Shikharji",
+    category: "Temple",
+  },
+];
 
-const imageMapping: { [key: string]: string } = {
-  "Betla National Park": BetlaNationalPark,
-  "Baidyanath Temple": BaidyanathTemple,
-};
+const categories = ["All", "Temple", "Nature", "Park", "Waterfall"];
 
-const Heritage = () => {
-  const [sites, setSites] = useState<HeritageSite[]>([]);
-  const [filteredSites, setFilteredSites] = useState<HeritageSite[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const { toast } = useToast();
+const Heritage: React.FC = () => {
+  const [selectedSpot, setSelectedSpot] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [isTourRunning, setIsTourRunning] = useState(false);
+  const tourIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const mapWrapperRef = useRef<HTMLDivElement>(null);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useTransform(y, [-1, 1], [20, -20]);
+  const rotateY = useTransform(x, [-1, 1], [-20, 20]);
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!mapWrapperRef.current) return;
+
+    const rect = mapWrapperRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  const startTour = () => {
+    setIsTourRunning(true);
+    setSelectedSpot(0);
+    let currentSpot = 1;
+    tourIntervalRef.current = setInterval(() => {
+      setSelectedSpot(currentSpot);
+      currentSpot = (currentSpot + 1) % spots.length;
+    }, 3000);
+  };
+
+  const stopTour = () => {
+    setIsTourRunning(false);
+    if (tourIntervalRef.current) {
+      clearInterval(tourIntervalRef.current);
+    }
+    setSelectedSpot(null);
+  };
 
   useEffect(() => {
-    fetchHeritageSites();
+    return () => {
+      if (tourIntervalRef.current) {
+        clearInterval(tourIntervalRef.current);
+      }
+    };
   }, []);
 
-  useEffect(() => {
-    filterSites();
-  }, [sites, searchTerm, selectedCategory]);
-
-  const fetchHeritageSites = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('heritage_sites')
-        .select('*')
-        .order('name');
-
-      if (error) throw error;
-      setSites(data || []);
-    } catch (error) {
-      console.error('Error fetching heritage sites:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load heritage sites",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterSites = () => {
-    let filtered = sites;
-
-    if (searchTerm) {
-      filtered = filtered.filter(site =>
-        site.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        site.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        site.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(site => site.category === selectedCategory);
-    }
-
-    setFilteredSites(filtered);
-  };
-
-  const getCategoryColor = (category: string) => {
-    const colors = {
-      heritage: 'bg-amber-100 text-amber-800 border-amber-300',
-      nature: 'bg-green-100 text-green-800 border-green-300',
-      culture: 'bg-purple-100 text-purple-800 border-purple-300',
-      adventure: 'bg-red-100 text-red-800 border-red-300',
-      pilgrimage: 'bg-blue-100 text-blue-800 border-blue-300',
-    };
-    return colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800 border-gray-300';
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const filteredSpots = useMemo(() => {
+    return spots.filter((spot) => {
+      const matchesCategory =
+        activeCategory === "All" || spot.category === activeCategory;
+      const matchesSearch = spot.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [searchQuery, activeCategory]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Heritage Sites of Jharkhand
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Discover the rich cultural heritage, ancient temples, and natural wonders 
-            that make Jharkhand a treasure trove of history and spirituality.
-          </p>
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search heritage sites..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-          </div>
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-full sm:w-48">
-              <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              <SelectItem value="heritage">Heritage</SelectItem>
-              <SelectItem value="nature">Nature</SelectItem>
-              <SelectItem value="culture">Culture</SelectItem>
-              <SelectItem value="adventure">Adventure</SelectItem>
-              <SelectItem value="pilgrimage">Pilgrimage</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Heritage Sites Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredSites.map((site) => (
-            <Card key={site.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="aspect-video bg-gradient-subtle relative">
-                {imageMapping[site.name] ? (
-                  <img src={imageMapping[site.name]} alt={site.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                    <MapPin className="h-12 w-12 text-white" />
-                  </div>
-                )}
-                <Badge className={`absolute top-4 left-4 ${getCategoryColor(site.category)}`}>
-                  {site.category}
-                </Badge>
-              </div>
-              
-              <CardHeader>
-                <CardTitle className="text-xl">{site.name}</CardTitle>
-                <CardDescription className="flex items-center gap-2 text-sm">
-                  <MapPin className="h-4 w-4" />
-                  {site.location}
-                </CardDescription>
-              </CardHeader>
-              
-              <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground line-clamp-3">
-                  {site.description}
-                </p>
-                
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-primary" />
-                    <span className="font-medium">Best time:</span>
-                    <span>{site.best_time_to_visit}</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <IndianRupee className="h-4 w-4 text-primary" />
-                    <span className="font-medium">Entry fee:</span>
-                    <span>{site.entry_fee === 0 ? 'Free' : `₹${site.entry_fee}`}</span>
-                  </div>
-                </div>
-                
-                <div className="border-t pt-3">
-                  <h4 className="font-semibold text-sm mb-2">Weather</h4>
-                  <Weather lat={site.latitude} lon={site.longitude} />
-                </div>
-
-                <div className="flex gap-2">
-                  <Button variant="heritage" size="sm" className="flex-1">
-                    Learn More
-                  </Button>
-                  {/* Placeholder for AR Feature */}
-                  <Button variant="outline" size="sm" onClick={() => alert('AR feature coming soon!')}>
-                    Launch AR
-                  </Button>
-                  {/* Placeholder for VR Feature */}
-                  <Button variant="outline" size="sm" onClick={() => alert('VR Tour coming soon!')}> 
-                    Start VR Tour
-                  </Button>
-                  {site.virtual_tour_url && (
-                    <Button variant="outline" size="sm">
-                      Virtual Tour
-                    </Button>
-                  )}
-                </div>
-                
-                {site.historical_significance && (
-                  <div className="border-t pt-3">
-                    <h4 className="font-semibold text-sm mb-2">Historical Significance</h4>
-                    <p className="text-xs text-muted-foreground line-clamp-3">
-                      {site.historical_significance}
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {filteredSites.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <MapPin className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">No heritage sites found</h3>
-            <p className="text-muted-foreground">
-              Try adjusting your search or filter criteria
+    <div
+      className="relative w-full min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url(/images/map.png)", perspective: "1000px" }}
+    >
+      <div className="absolute inset-0 bg-black bg-opacity-40" />
+      <div className="relative z-10 flex flex-col items-center w-full h-full min-h-screen p-4">
+        <div className="w-full max-w-4xl mx-auto text-center">
+            <h1 className="text-5xl font-extrabold text-white mt-8 mb-4" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
+            Explore the Heritage of Jharkhand
+            </h1>
+            <p className="text-lg text-white mb-8">
+                Discover the rich culture and natural beauty of Jharkhand.
             </p>
+        </div>
+
+        <div className="w-full max-w-4xl mx-auto bg-white/20 backdrop-blur-sm p-4 rounded-lg shadow-lg mb-8">
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+                <Input
+                    type="text"
+                    placeholder="Search for a location..."
+                    className="w-full md:w-1/3 bg-white/80"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    disabled={isTourRunning}
+                />
+                <div className="flex flex-wrap gap-2">
+                    {categories.map((category) => (
+                        <Button
+                            key={category}
+                            onClick={() => setActiveCategory(category)}
+                            className={`${ activeCategory === category ? "bg-blue-600 text-white" : "bg-white/80 text-black" } hover:bg-blue-500 hover:text-white`}
+                            disabled={isTourRunning}
+                        >
+                            {category}
+                        </Button>
+                    ))}
+                </div>
+                <div className="flex-grow" />
+                {!isTourRunning ? (
+                    <Button onClick={startTour} className="bg-green-500 hover:bg-green-600 text-white">
+                        <Play className="mr-2" size={16}/>
+                        Start Guided Tour
+                    </Button>
+                ) : (
+                    <Button onClick={stopTour} className="bg-red-500 hover:bg-red-600 text-white">
+                        <StopCircle className="mr-2" size={16}/>
+                        Stop Tour
+                    </Button>
+                )}
+            </div>
+        </div>
+
+        <motion.div
+          ref={mapWrapperRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          className="relative w-full max-w-4xl" 
+        >
+          <div style={{ aspectRatio: '1088 / 960', transform: "translateZ(0)" }}>
+            {/* Markers */}
+            {filteredSpots.map((spot, index) => {
+              const originalIndex = spots.findIndex(s => s.name === spot.name);
+              return (
+              <div
+                key={originalIndex}
+                className="absolute"
+                style={{ top: spot.top, left: spot.left, transform: "translateZ(20px)" }}
+                onClick={() => setSelectedSpot(originalIndex)}
+              >
+                <motion.div
+                  className="w-5 h-5 bg-pink-500 rounded-full shadow-lg cursor-pointer border-2 border-white animate-pulse"
+                  whileHover={{ scale: 1.3 }}
+                />
+              </div>
+            )})}
+
+            {/* Card */}
+            {selectedSpot !== null && (
+              <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="absolute z-50 w-72"
+                  style={{
+                      top: `calc(${spots[selectedSpot].top} - 10rem)`,
+                      left: `calc(${spots[selectedSpot].left} + 2rem)`,
+                      transform: "translateZ(50px)"
+                  }}
+              >
+                <Card className="shadow-xl border-2 border-blue-500 relative">
+                  <Button
+                      onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedSpot(null);
+                      }}
+                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 text-white p-0"
+                  >
+                      <X size={16} />
+                  </Button>
+                  <CardContent className="p-2">
+                    <img
+                      src={spots[selectedSpot].img}
+                      alt={spots[selectedSpot].name}
+                      className="w-full h-32 object-cover rounded-lg"
+                    />
+                    <h3 className="text-lg font-semibold mt-2">{spots[selectedSpot].name}</h3>
+                    <p className="text-sm text-gray-600 mb-2">{spots[selectedSpot].desc}</p>
+                    <Button
+                      className="mt-2 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => window.open(spots[selectedSpot].wiki, "_blank")}
+                    >
+                      Learn More
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
           </div>
-        )}
+        </motion.div>
       </div>
     </div>
   );
