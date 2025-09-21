@@ -1,12 +1,12 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import baidyanathTemple from "@/assets/baidyanath_temple.jpg";
-import betlaNationalPark from "@/assets/betla_national_park.jpg";
-import dassamFalls from "@/assets/dassam_falls.jpg";
-import hundruFalls from "@/assets/hundru_falls.jpg";
-import jagannathTempleRanchi from "@/assets/jagannath_temple_ranchi.jpg";
-import rajrappaTemple from "@/assets/rajrappa_temple.jpg";
+import baidyanathTemple from "@/assets/baidyanath_temple.png";
+import betlaNationalPark from "@/assets/betla_national_park.png";
+import dassamFalls from "@/assets/dassam_falls.png";
+import hundruFalls from "@/assets/hundru_falls.png";
+import jagannathTempleRanchi from "@/assets/jagannath_temple_ranchi.png";
+import rajrappaTemple from "@/assets/rajrappa_temple.png";
 
 
 const destinations = [

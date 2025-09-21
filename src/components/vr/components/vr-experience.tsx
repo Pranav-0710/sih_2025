@@ -117,7 +117,7 @@ export function VRExperience() {
       <section className="relative h-screen flex items-center justify-center">
         {/* Background Image */}
         <img
-          src="/vr-assets/public/jharkhand-landscape-with-lush-green-forests-waterf.jpg"
+          src="/vr-assets/public/jharkhand-landscape-with-lush-green-forests-waterf.png"
           alt="Jharkhand Landscape"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -353,7 +353,7 @@ export function VRExperience() {
 
           <div className="relative h-96 rounded-2xl overflow-hidden">
             <img
-              src="/vr-assets/public/jharkhand-tribal-dance-festival-with-traditional-c.jpg"
+              src="/vr-assets/public/jharkhand-tribal-dance-festival-with-traditional-c.png"
               alt="Tribal Culture"
               className="w-full h-full object-cover"
             />
@@ -451,7 +451,7 @@ export function VRExperience() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48">
                   <img
-                    src="/vr-assets/public/ranchi-city-skyline-with-rock-garden-and-jagannath.jpg"
+                    src="/vr-assets/public/ranchi-city-skyline-with-rock-garden-and-jagannath.png"
                     alt="Cultural Heritage Tour"
                     className="w-full h-full object-cover"
                   />
@@ -479,7 +479,7 @@ export function VRExperience() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48">
                   <img
-                    src="/vr-assets/public/betla-national-park-forest-with-tigers-and-elephan.jpg"
+                    src="/vr-assets/public/betla-national-park-forest-with-tigers-and-elephan.png"
                     alt="Wildlife Safari Adventure"
                     className="w-full h-full object-cover"
                   />
@@ -507,7 +507,7 @@ export function VRExperience() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48">
                   <img
-                    src="/vr-assets/public/lodh-falls-waterfall-cascading-through-green-fores.jpg"
+                    src="/vr-assets/public/lodh-falls-waterfall-cascading-through-green-fores.png"
                     alt="Complete Jharkhand Experience"
                     className="w-full h-full object-cover"
                   />
@@ -651,7 +651,7 @@ const locations = [
     type: "Capital City",
     description:
       "Explore the vibrant capital with its Rock Garden, serene lakes, and the magnificent Jagannath Temple.",
-    image: "/vr-assets/public/ranchi-city-skyline-with-rock-garden-and-jagannath.jpg",
+    image: "/vr-assets/public/ranchi-city-skyline-with-rock-garden-and-jagannath.png",
     audioTracks: [
       {
         id: "ranchi-intro",
@@ -736,12 +736,12 @@ const locations = [
     ],
   },
   {
-    id: "netarhat",
+    id: " hat",
     name: "Netarhat",
     type: "Hill Station",
     description:
       "Witness breathtaking sunrise views from the Queen of Chotanagpur, surrounded by rolling hills and valleys.",
-    image: "/vr-assets/public/netarhat-sunrise-point-with-hills-and-valleys-gold.jpg",
+    image: "/vr-assets/public/netarhat-sunrise-point-with-hills-and-valleys-gold.png",
     audioTracks: [
       {
         id: "netarhat-intro",
@@ -795,7 +795,7 @@ const locations = [
     name: "Betla National Park",
     type: "Wildlife Sanctuary",
     description: "Embark on a virtual safari through dense forests home to tigers, elephants, and diverse wildlife.",
-    src: "/vr-assets/public/betla-national-park-forest-with-tigers-and-elephan.jpg",
+    src: "/vr-assets/public/betla-national-park-forest-with-tigers-and-elephan.png",
     audioTracks: [
       {
         id: "betla-intro",
@@ -856,9 +856,9 @@ const locations = [
   {
     id: "hazaribagh",
     name: "Hazaribagh",
-    type: "Lake District",
+  type: "nature",
     description: "Discover the tranquil beauty of Hazaribagh Lake surrounded by scenic hills and wildlife sanctuary.",
-    image: "/vr-assets/public/hazaribagh-lake-with-surrounding-hills-and-peacefu.jpg",
+    image: "/vr-assets/public/hazaribagh-lake-with-surrounding-hills-and-peacefu.png",
     hotspots: [
       {
         id: "hazaribagh-lake",
@@ -883,9 +883,9 @@ const locations = [
   {
     id: "tribal-villages",
     name: "Tribal Villages",
-    type: "Cultural Heritage",
+  type: "culture",
     description: "Immerse yourself in authentic tribal life, traditional crafts, and age-old customs.",
-    src: "/vr-assets/public/jharkhand-tribal-village-with-traditional-huts-and.jpg",
+    src: "/vr-assets/public/jharkhand-tribal-village-with-traditional-huts-and.png",
     hotspots: [
       {
         id: "traditional-huts",
@@ -920,9 +920,9 @@ const locations = [
   {
     id: "waterfalls",
     name: "Lodh Falls",
-    type: "Natural Wonder",
+  type: "nature",
     description: "Experience the thundering beauty of Jharkhand's highest waterfall cascading through lush forests.",
-    src: "/vr-assets/public/lodh-falls-waterfall-cascading-through-green-fores.jpg",
+    src: "/vr-assets/public/lodh-falls-waterfall-cascading-through-green-fores.png",
     hotspots: [
       {
         id: "main-falls",

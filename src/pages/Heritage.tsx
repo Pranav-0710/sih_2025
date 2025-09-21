@@ -8,8 +8,8 @@ import { MapPin, Clock, IndianRupee, Search, Filter, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import Navigation from '@/components/Navigation';
 import { useToast } from '@/hooks/use-toast';
-import BetlaNationalPark from '@/assets/betla_national_park.jpg';
-import BaidyanathTemple from '@/assets/baidyanath_temple.jpg';
+import BetlaNationalPark from '@/assets/betla_national_park.png';
+import BaidyanathTemple from '@/assets/baidyanath_temple.png';
 import Weather from './Weather';
 
 interface HeritageSite {

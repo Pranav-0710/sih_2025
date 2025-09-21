@@ -10,9 +10,9 @@ import {
   Compass,
   Camera
 } from "lucide-react";
-import heritageImage from "@/assets/heritage-site.jpg";
-import tribalImage from "@/assets/tribal-culture.jpg";
-import natureImage from "@/assets/nature-wildlife.jpg";
+import heritageImage from "@/assets/heritage-site.png";
+import tribalImage from "@/assets/tribal-culture.png";
+import natureImage from "@/assets/nature-wildlife.png";
 import { motion } from "framer-motion";
 
 const colorMap = {

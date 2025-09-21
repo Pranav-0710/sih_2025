@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles, MapPin, Calendar } from "lucide-react";
-import heroImage from "@/assets/hero-jharkhand.jpg";
+import heroImage from "@/assets/hero-jharkhand.png";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
