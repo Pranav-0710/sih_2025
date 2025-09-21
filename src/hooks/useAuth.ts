@@ -7,6 +7,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  role: string | null;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
@@ -16,6 +17,7 @@ export const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,
   loading: true,
+  role: null,
   signUp: async () => ({ error: null }),
   signIn: async () => ({ error: null }),
   signOut: async () => {},
@@ -33,6 +35,7 @@ export const useAuthState = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState<string | null>(null);
   const { toast } = useToast();
 
   const signUp = async (email: string, password: string, fullName: string) => {
@@ -46,6 +49,7 @@ export const useAuthState = () => {
           emailRedirectTo: redirectUrl,
           data: {
             full_name: fullName,
+            role: 'user', // Default role for new sign-ups
           }
         }
       });
@@ -77,7 +81,7 @@ export const useAuthState = () => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -89,6 +93,26 @@ export const useAuthState = () => {
           variant: "destructive",
         });
         return { error };
+      }
+
+      // WARNING: Hardcoding admin emails in client-side code is not secure for production.
+      // This is for demonstration purposes only. In a real application, roles should be
+      // managed securely on the backend or directly in Supabase user metadata.
+      const adminEmails = ['pranavkanth07@gmail.com', 'mukundangopalachary@gmail.com'];
+      if (data.user && adminEmails.includes(data.user.email || '')) {
+        // Update user metadata to set role as admin
+        const { error: updateError } = await supabase.auth.updateUser({
+          data: { role: 'admin' }
+        });
+
+        if (updateError) {
+          console.error("Error updating user role to admin:", updateError);
+          toast({
+            title: "Role Update Error",
+            description: updateError.message,
+            variant: "destructive",
+          });
+        }
       }
 
       toast({
@@ -129,6 +153,7 @@ export const useAuthState = () => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        setRole(session?.user?.user_metadata?.role as string || null);
         setLoading(false);
       }
     );
@@ -137,6 +162,7 @@ export const useAuthState = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setRole(session?.user?.user_metadata?.role as string || null);
       setLoading(false);
     });
 
@@ -147,6 +173,7 @@ export const useAuthState = () => {
     user,
     session,
     loading,
+    role,
     signUp,
     signIn,
     signOut,
