@@ -345,8 +345,8 @@ export function WildlifeSpottingGame({ isVisible, onClose, locationId, onComplet
                 style={{
                   backgroundImage:
                     locationId === "betla-national-park"
-                      ? "url('/betla-national-park-forest-with-tigers-and-elephan.jpg')"
-                      : "url('/jharkhand-landscape-with-lush-green-forests-waterf.jpg')",
+                      ? "url('/vr-assets/public/betla-national-park-forest-with-tigers-and-elephan.jpg')"
+                      : "url('/vr-assets/public/jharkhand-landscape-with-lush-green-forests-waterf.jpg')",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}

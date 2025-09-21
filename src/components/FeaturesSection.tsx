@@ -13,6 +13,34 @@ import {
 import heritageImage from "@/assets/heritage-site.jpg";
 import tribalImage from "@/assets/tribal-culture.jpg";
 import natureImage from "@/assets/nature-wildlife.jpg";
+import { motion } from "framer-motion";
+
+const colorMap = {
+  heritage: {
+    bg: "bg-orange-100",
+    text: "text-orange-500",
+  },
+  cultural: {
+    bg: "bg-blue-100",
+    text: "text-blue-500",
+  },
+  accent: {
+    bg: "bg-yellow-100",
+    text: "text-yellow-500",
+  },
+  nature: {
+    bg: "bg-green-100",
+    text: "text-green-500",
+  },
+  destructive: {
+    bg: "bg-red-100",
+    text: "text-red-500",
+  },
+  primary: {
+    bg: "bg-purple-100",
+    text: "text-purple-500",
+  },
+};
 
 const FeaturesSection = () => {
   const features = [
@@ -60,6 +88,11 @@ const FeaturesSection = () => {
     }
   ];
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <section className="py-20 bg-gradient-subtle">
       <div className="container mx-auto px-4 lg:px-6">
@@ -80,43 +113,51 @@ const FeaturesSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <Card 
-              key={index} 
-              className="group hover:shadow-strong transition-all duration-500 hover:-translate-y-1 border-0 shadow-soft overflow-hidden"
+            <motion.div
+              key={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              {feature.image && (
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src={feature.image} 
-                    alt={feature.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-              )}
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className={`p-2 rounded-lg bg-${feature.color}/10`}>
-                    <feature.icon className={`h-5 w-5 text-${feature.color}`} />
+              <Card 
+                className="group hover:shadow-strong transition-all duration-500 hover:-translate-y-1 border-0 shadow-soft overflow-hidden h-full"
+              >
+                {feature.image && (
+                  <div className="h-48 overflow-hidden">
+                    <img 
+                      src={feature.image} 
+                      alt={feature.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
-                  <CardTitle className="text-lg font-semibold text-foreground">
-                    {feature.title}
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-muted-foreground mb-4 leading-relaxed">
-                  {feature.description}
-                </p>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-primary hover:text-primary-foreground hover:bg-primary p-0 h-auto font-medium group"
-                >
-                  Learn More
-                  <Compass className="ml-1 h-3 w-3 group-hover:rotate-12 transition-transform" />
-                </Button>
-              </CardContent>
-            </Card>
+                )}
+                <CardHeader className="pb-3">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className={`p-2 rounded-lg ${colorMap[feature.color]?.bg}`}>
+                      <feature.icon className={`h-5 w-5 ${colorMap[feature.color]?.text}`} />
+                    </div>
+                    <CardTitle className="text-lg font-semibold text-foreground">
+                      {feature.title}
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <p className="text-muted-foreground mb-4 leading-relaxed">
+                    {feature.description}
+                  </p>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-primary hover:text-primary-foreground hover:bg-primary p-0 h-auto font-medium group"
+                  >
+                    Learn More
+                    <Compass className="ml-1 h-3 w-3 group-hover:rotate-12 transition-transform" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
 

@@ -9,6 +9,8 @@ import { Send, Sparkles, MapPin, Clock, DollarSign, Heart } from 'lucide-react';
 import { HfInference } from '@huggingface/inference';
 import { useToast } from '@/hooks/use-toast';
 import Navigation from '@/components/Navigation';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
 interface Message {
   id: string;
@@ -248,7 +250,11 @@ const TripGenie = () => {
                             : 'bg-primary text-primary-foreground'
                         }`}
                       >
-                        <div className="text-sm whitespace-pre-wrap">{message.content}</div>
+                        <div className={`text-sm prose dark:prose-invert max-w-none ${
+                          !message.isBot && 'prose-white-text'
+                        }`}>
+                          <ReactMarkdown rehypePlugins={[rehypeRaw]}>{message.content}</ReactMarkdown>
+                        </div>
                         <div className="text-xs opacity-70 mt-1">
                           {message.timestamp.toLocaleTimeString()}
                         </div>

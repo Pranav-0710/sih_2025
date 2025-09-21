@@ -22,7 +22,7 @@
 
     /* Primary - Deep Forest Green (Jharkhand's forests) */
     --primary: 140 45% 25%;
-    --primary-foreground: 0 0% 98%;
+    --primary-foreground: 0 0% 100%;
     
     /* Secondary - Warm Earth Tones */
     --secondary: 35 25% 90%;
@@ -97,7 +97,7 @@
 
     /* Brighter colors for dark mode */
     --primary: 120 40% 55%;
-    --primary-foreground: 20 25% 8%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 25 20% 18%;
     --secondary-foreground: 40 15% 92%;
@@ -155,5 +155,32 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .prose-white-text {
+    --tw-prose-body: theme(colors.white);
+    --tw-prose-headings: theme(colors.white);
+    --tw-prose-lead: theme(colors.white);
+    --tw-prose-links: theme(colors.white);
+    --tw-prose-bold: theme(colors.white);
+    --tw-prose-counters: theme(colors.white);
+    --tw-prose-bullets: theme(colors.white);
+    --tw-prose-hr: theme(colors.white);
+    --tw-prose-quotes: theme(colors.white);
+    --tw-prose-quote-borders: theme(colors.white);
+    --tw-prose-captions: theme(colors.white);
+    --tw-prose-code: theme(colors.white);
+    --tw-prose-pre-code: theme(colors.white);
+    --tw-prose-pre-bg: transparent;
+    --tw-prose-th-borders: theme(colors.white);
+    --tw-prose-td-borders: theme(colors.white);
+  }
+}
+
+@layer base {
+  .large-font {
+    font-size: 18px;
   }
 }

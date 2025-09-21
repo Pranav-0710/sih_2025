@@ -353,7 +353,7 @@ export function VRExperience() {
 
           <div className="relative h-96 rounded-2xl overflow-hidden">
             <img
-              src="/jharkhand-tribal-dance-festival-with-traditional-c.jpg"
+              src="/vr-assets/public/jharkhand-tribal-dance-festival-with-traditional-c.jpg"
               alt="Tribal Culture"
               className="w-full h-full object-cover"
             />
@@ -451,7 +451,7 @@ export function VRExperience() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48">
                   <img
-                    src="/ranchi-city-skyline-with-rock-garden-and-jagannath.jpg"
+                    src="/vr-assets/public/ranchi-city-skyline-with-rock-garden-and-jagannath.jpg"
                     alt="Cultural Heritage Tour"
                     className="w-full h-full object-cover"
                   />
@@ -479,7 +479,7 @@ export function VRExperience() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48">
                   <img
-                    src="/betla-national-park-forest-with-tigers-and-elephan.jpg"
+                    src="/vr-assets/public/betla-national-park-forest-with-tigers-and-elephan.jpg"
                     alt="Wildlife Safari Adventure"
                     className="w-full h-full object-cover"
                   />
@@ -651,7 +651,7 @@ const locations = [
     type: "Capital City",
     description:
       "Explore the vibrant capital with its Rock Garden, serene lakes, and the magnificent Jagannath Temple.",
-    image: "/ranchi-city-skyline-with-rock-garden-and-jagannath.jpg",
+    image: "/vr-assets/public/ranchi-city-skyline-with-rock-garden-and-jagannath.jpg",
     audioTracks: [
       {
         id: "ranchi-intro",
@@ -741,7 +741,7 @@ const locations = [
     type: "Hill Station",
     description:
       "Witness breathtaking sunrise views from the Queen of Chotanagpur, surrounded by rolling hills and valleys.",
-    image: "/netarhat-sunrise-point-with-hills-and-valleys-gold.jpg",
+    image: "/vr-assets/public/netarhat-sunrise-point-with-hills-and-valleys-gold.jpg",
     audioTracks: [
       {
         id: "netarhat-intro",
@@ -858,7 +858,7 @@ const locations = [
     name: "Hazaribagh",
     type: "Lake District",
     description: "Discover the tranquil beauty of Hazaribagh Lake surrounded by scenic hills and wildlife sanctuary.",
-    image: "/hazaribagh-lake-with-surrounding-hills-and-peacefu.jpg",
+    image: "/vr-assets/public/hazaribagh-lake-with-surrounding-hills-and-peacefu.jpg",
     hotspots: [
       {
         id: "hazaribagh-lake",
@@ -885,7 +885,7 @@ const locations = [
     name: "Tribal Villages",
     type: "Cultural Heritage",
     description: "Immerse yourself in authentic tribal life, traditional crafts, and age-old customs.",
-    src: "/jharkhand-tribal-village-with-traditional-huts-and.jpg",
+    src: "/vr-assets/public/jharkhand-tribal-village-with-traditional-huts-and.jpg",
     hotspots: [
       {
         id: "traditional-huts",
