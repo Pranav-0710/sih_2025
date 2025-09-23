@@ -5,9 +5,10 @@ import { X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import Navigation from '@/components/Navigation';
 
 // --- LEAFLET ICON FIX ---
-delete L.Icon.Default.prototype._getIconUrl;
+    // --- LEAFLET ICON FIX ---
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
     iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
@@ -20,7 +21,6 @@ const Transport = () => {
   const markersRef = useRef({});
   const routeLayersRef = useRef({});
   const animationFrameRef = useRef(null);
-  const visibleRouteLayer = useRef(null);
 
   const [filters, setFilters] = useState({ Bus: true, Train: true, Cab: true, 'Auto-rickshaw': true });
   const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -28,35 +28,54 @@ const Transport = () => {
 
   useEffect(() => {
     const routes = {
-        "BUS_1": { type: 'Bus', points: [[23.35, 85.32], [23.42, 85.34], [23.45, 85.40], [23.42, 85.45], [23.35, 85.48]] },
-        "BUS_2": { type: 'Bus', points: [[23.30, 85.25], [23.35, 85.28], [23.38, 85.35], [23.35, 85.40], [23.28, 85.38]] },
-        "TRAIN_1": { type: 'Train', points: [[23.25, 85.20], [23.3642, 85.3345], [23.45, 85.48], [23.50, 85.55]] },
+        "BUS_1": { type: 'Bus', points: [[23.35, 85.32], [23.42, 85.34], [23.45, 85.40], [23.42, 85.45], [23.35, 85.48]], color: '#3b82f6', from: 'Kanke', to: 'Pithoria', stops: ['Kanke', 'Ranchi University', 'Ranchi Club', 'Pithoria'] },
+        "BUS_2": { type: 'Bus', points: [[23.30, 85.25], [23.35, 85.28], [23.38, 85.35], [23.35, 85.40], [23.28, 85.38]], color: '#16a34a', from: 'Ratu', to: 'Harmu', stops: ['Ratu', 'ITI', 'Harmu Market', 'Harmu'] },
+        "BUS_3": { type: 'Bus', points: [[23.40, 85.20], [23.48, 85.25], [23.50, 85.30], [23.45, 85.35]], color: '#f97316', from: 'Ormanjhi', to: 'Mesra', stops: ['Ormanjhi', 'BIT Mesra', 'Mesra'] },
+        "BUS_4": { type: 'Bus', points: [[23.25, 85.40], [23.30, 85.45], [23.35, 85.50], [23.40, 85.48]], color: '#9333ea', from: 'Namkum', to: 'Tatisilwai', stops: ['Namkum', 'Railway Station', 'Tatisilwai'] },
+        "TRAIN_1": { type: 'Train', points: [[23.25, 85.20], [23.3642, 85.3345], [23.45, 85.48], [23.50, 85.55]], color: '#ef4444', from: 'Hatia', to: 'Muri', stops: ['Hatia', 'Ranchi Jn', 'Tatisilwai', 'Muri'] },
+        "TRAIN_2": { type: 'Train', points: [[23.55, 85.15], [23.48, 85.22], [23.40, 85.30], [23.30, 85.38]], color: '#d946ef', from: 'Barkakana', to: 'Ranchi', stops: ['Barkakana', 'Ramgarh Cantt', 'Muri', 'Ranchi Jn'] },
+        "CAR_1": { type: 'Cab', points: [[23.45, 85.30], [23.40, 85.35], [23.45, 85.40]], color: '#facc15', from: 'Airport', to: 'Main Road' },
     };
 
     const generateVehicles = () => {
         const vehicles = [];
-        const counts = { bus: 15, train: 2, cab: 8, auto: 8 };
+        const counts = { bus: 30, train: 4, cab: 8, auto: 8 };
         const WIDER_BOUNDS = { minLat: 23.20, maxLat: 23.55, minLon: 85.18, maxLon: 85.58 };
-        const BUS_COLORS = ['#3b82f6', '#16a34a', '#f97316', '#9333ea'];
-        const TRAIN_COLORS = ['#ef4444', '#d946ef'];
+        const BUS_COLORS = ['#3b82f6', '#16a34a', '#f97316', '#9333ea', '#06b6d4', '#f43f5e'];
+        const TRAIN_COLORS = ['#ef4444', '#d946ef', '#8b5cf6', '#10b981'];
         const CAB_COLORS = ['#facc15', '#eab308'];
         const AUTO_COLORS = ['#4ade80', '#22c55e'];
 
         const busRouteIds = Object.keys(routes).filter(id => id.startsWith('BUS'));
         for (let i = 0; i < counts.bus; i++) {
             const routeId = busRouteIds[i % busRouteIds.length];
-            vehicles.push({ id: `bus_${i}`, type: 'Bus', routeId, name: `Bus ${i+1}`, color: BUS_COLORS[i % BUS_COLORS.length], segment: Math.floor(Math.random() * (routes[routeId].points.length - 1)), progress: Math.random(), speed: 0.000005 + (Math.random() * 0.000004) });
+            const segment = Math.floor(Math.random() * (routes[routeId].points.length - 1));
+            const progress = Math.random();
+            const totalSegments = routes[routeId].points.length - 1;
+            const remainingSegments = totalSegments - segment - progress;
+            const eta = Math.round(remainingSegments * 5);
+            const capacity = Math.floor(Math.random() * 40) + 20; // Capacity between 20-60
+            const nextStopIndex = Math.min(segment + 1, routes[routeId].stops.length - 1);
+            const nextStop = routes[routeId].stops[nextStopIndex];
+            vehicles.push({ id: `bus_${i}`, type: 'Bus', routeId, name: `Bus ${i+1}`, color: BUS_COLORS[i % BUS_COLORS.length], segment, progress, speed: 0.000005 + (Math.random() * 0.000004), eta, capacity, nextStop });
         }
         const trainRouteIds = Object.keys(routes).filter(id => id.startsWith('TRAIN'));
         for (let i = 0; i < counts.train; i++) {
             const routeId = trainRouteIds[i % trainRouteIds.length];
-            vehicles.push({ id: `train_${i}`, type: 'Train', routeId, name: `Train ${i+1}`, color: TRAIN_COLORS[i % TRAIN_COLORS.length], segment: Math.floor(Math.random() * (routes[routeId].points.length - 1)), progress: Math.random(), speed: 0.000015 + (Math.random() * 0.00001) });
+            const segment = Math.floor(Math.random() * (routes[routeId].points.length - 1));
+            const progress = Math.random();
+            const totalSegments = routes[routeId].points.length - 1;
+            const remainingSegments = totalSegments - segment - progress;
+            const eta = Math.round(remainingSegments * 1.5);
+            vehicles.push({ id: `train_${i}`, type: 'Train', routeId, name: `Train ${i+1}`, color: TRAIN_COLORS[i % TRAIN_COLORS.length], segment, progress, speed: 0.000015 + (Math.random() * 0.00001), eta });
         }
         for (let i = 0; i < counts.cab; i++) {
-            vehicles.push({ id: `cab_${i}`, type: 'Cab', lat: WIDER_BOUNDS.minLat + Math.random() * (WIDER_BOUNDS.maxLat - WIDER_BOUNDS.minLat), lon: WIDER_BOUNDS.minLon + Math.random() * (WIDER_BOUNDS.maxLon - WIDER_BOUNDS.minLon), name: `Cab #${i + 1}`, color: CAB_COLORS[i % CAB_COLORS.length] });
+            const eta = Math.round(Math.random() * 30);
+            vehicles.push({ id: `cab_${i}`, type: 'Cab', lat: WIDER_BOUNDS.minLat + Math.random() * (WIDER_BOUNDS.maxLat - WIDER_BOUNDS.minLat), lon: WIDER_BOUNDS.minLon + Math.random() * (WIDER_BOUNDS.maxLon - WIDER_BOUNDS.minLon), name: `Cab #${i + 1}`, color: CAB_COLORS[i % CAB_COLORS.length], eta });
         }
         for (let i = 0; i < counts.auto; i++) {
-            vehicles.push({ id: `auto_${i}`, type: 'Auto-rickshaw', lat: WIDER_BOUNDS.minLat + Math.random() * (WIDER_BOUNDS.maxLat - WIDER_BOUNDS.minLat), lon: WIDER_BOUNDS.minLon + Math.random() * (WIDER_BOUNDS.maxLon - WIDER_BOUNDS.minLon), name: `Auto #${i + 1}`, color: AUTO_COLORS[i % AUTO_COLORS.length] });
+            const eta = Math.round(Math.random() * 25);
+            vehicles.push({ id: `auto_${i}`, type: 'Auto-rickshaw', lat: WIDER_BOUNDS.minLat + Math.random() * (WIDER_BOUNDS.maxLat - WIDER_BOUNDS.minLat), lon: WIDER_BOUNDS.minLon + Math.random() * (WIDER_BOUNDS.maxLon - WIDER_BOUNDS.minLon), name: `Auto #${i + 1}`, color: AUTO_COLORS[i % AUTO_COLORS.length], eta });
         }
         return vehicles;
     };
@@ -76,41 +95,46 @@ const Transport = () => {
         return L.divIcon({ html: iconHtml(type, color), className: 'bg-transparent transition-transform duration-100 ease-in-out', iconSize: [size, size], iconAnchor: [size/2, size/2], popupAnchor: [0, -size/2] });
     };
 
-    const showRoute = (routeId) => {
-        // Hide the previously visible route
-        if (visibleRouteLayer.current && mapRef.current.hasLayer(visibleRouteLayer.current)) {
-            mapRef.current.removeLayer(visibleRouteLayer.current);
-        }
+    const highlightRoute = (routeId) => {
+        // Reset style of all routes
+        Object.values(routeLayersRef.current).forEach(layer => (layer as L.Polyline).setStyle({ weight: 5, opacity: 0.7 }));
 
-        // Show the new route
+        // Highlight the selected route
         if (routeId && routeLayersRef.current[routeId]) {
-            const newLayer = routeLayersRef.current[routeId];
-            newLayer.addTo(mapRef.current).bringToFront();
-            visibleRouteLayer.current = newLayer;
+            routeLayersRef.current[routeId].setStyle({ weight: 8, opacity: 1 }).bringToFront();
         }
     };
 
     if (mapContainerRef.current && !mapRef.current) {
-      mapRef.current = L.map(mapContainerRef.current, { zoomControl: false }).setView([23.4, 85.4], 10);
+      mapRef.current = L.map(mapContainerRef.current, { zoomControl: false }).setView([23.4, 85.4], 11);
       L.control.zoom({ position: 'bottomright' }).addTo(mapRef.current);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(mapRef.current);
 
-      // Create route layers but do not add them to the map
+      // Create and add route layers to the map
       Object.entries(routes).forEach(([id, routeData]) => {
-        const isTrain = routeData.type === 'Train';
-        const style = isTrain ? { color: '#ef4444', weight: 7, opacity: 1 } : { color: '#e11d48', weight: 7, opacity: 1 };
-        routeLayersRef.current[id] = L.polyline(routeData.points, style);
+        const style = { color: routeData.color, weight: 5, opacity: 0.7 };
+        routeLayersRef.current[id] = L.polyline(routeData.points as L.LatLngTuple[], style).addTo(mapRef.current);
       });
 
       generatedTransports.forEach(t => {
-        const latlng = (t.type === 'Bus' || t.type === 'Train') ? routes[t.routeId].points[t.segment] : [t.lat, t.lon];
+        const latlng = (t.type === 'Bus' || t.type === 'Train' || (t.type === 'Cab' && t.routeId)) ? routes[t.routeId].points[t.segment] : [t.lat, t.lon];
         const marker = L.marker(latlng, { icon: getIcon(t.type, t.color) });
         
-        marker.on('click', () => {
-            setSelectedVehicle(t);
-            showRoute(t.routeId);
-            mapRef.current.flyTo(marker.getLatLng(), 14);
-        });
+        let popupContent = `Hello from ${t.name}`;
+        marker.bindPopup(popupContent);
+
+                marker.on('click', () => {
+                    alert(`Clicked on ${t.name}`);
+                    // marker.openPopup(); // Explicitly open the Leaflet popup
+                    setSelectedVehicle(t);
+                    if (t.routeId) {
+                        highlightRoute(t.routeId);
+                    } else {
+                        highlightRoute(null); // Clear highlight for non-routed vehicles
+                    }
+                    mapRef.current?.flyTo(marker.getLatLng(), 14);
+                });
+
         marker.on('mouseover', () => marker.setIcon(getIcon(t.type, t.color, 40)));
         marker.on('mouseout', () => marker.setIcon(getIcon(t.type, t.color, 28)));
 
@@ -120,7 +144,7 @@ const Transport = () => {
 
       const animate = () => {
         Object.values(markersRef.current).forEach(({ marker, data }) => {
-          if (data.type === 'Bus' || data.type === 'Train') {
+          if (data.routeId) {
             data.progress += data.speed;
             if (data.progress >= 1) {
               data.progress = 0;
@@ -155,10 +179,12 @@ const Transport = () => {
   const handleClosePanel = () => {
     setSelectedVehicle(null);
     setIsFollowing(false);
-    showRoute(null); // Hide the route
+    highlightRoute(null); // Reset route highlight
   }
 
   return (
+    <>
+    <Navigation />
     <div ref={mapContainerRef} className="h-[calc(100vh-4rem)] w-full relative">
       {/* Info Panel */}
       {selectedVehicle && (
@@ -169,6 +195,7 @@ const Transport = () => {
             </div>
             <div className="space-y-2 text-sm">
                 <p><span className="font-semibold">Type:</span> {selectedVehicle.type}</p>
+                {selectedVehicle.eta !== undefined && <p><span className="font-semibold">ETA:</span> {selectedVehicle.eta} minutes</p>}
                 {selectedVehicle.speed && <p><span className="font-semibold">Speed:</span> {(selectedVehicle.speed * 100000).toFixed(1)} km/h</p>}
                 {selectedVehicle.routeId && <p><span className="font-semibold">Route:</span> {selectedVehicle.routeId}</p>}
             </div>
@@ -191,6 +218,7 @@ const Transport = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -24,7 +24,12 @@ export function Navigation() {
     { name: "Emergency", path: "/emergency" },
     { name: "Weather", path: "/weather" },
     { name: "Bookings", path: "/bookings" },
-    { name: "Sentiment Analysis", path: "/sentiment-analysis" },
+    ...(user
+      ? [
+          { name: "Sentiment Analysis", path: "/sentiment-analysis" },
+          { name: "Transport", path: "/transport" },
+        ]
+      : []),
   ];
 
   return (
