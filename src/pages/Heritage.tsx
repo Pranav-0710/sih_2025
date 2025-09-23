@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X, Play, StopCircle } from "lucide-react";
+import Navigation from "@/components/Navigation";
 
 const spots = [
   {
@@ -176,6 +177,8 @@ const Heritage: React.FC = () => {
   }, [searchQuery, activeCategory]);
 
   return (
+    <>
+    <Navigation />
     <div
       className="relative w-full min-h-screen bg-cover bg-center"
       style={{ backgroundImage: "url(/images/map.png)", perspective: "1000px" }}
@@ -298,6 +301,7 @@ const Heritage: React.FC = () => {
         </motion.div>
       </div>
     </div>
+    </>
   );
 };
 
