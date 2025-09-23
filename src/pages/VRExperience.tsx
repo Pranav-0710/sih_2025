@@ -1,10 +1,13 @@
-import { VRExperience } from "@/components/vr/components/vr-experience";
-import Navigation from "@/components/Navigation";
-export default function VRExperiencePage() {
+import React from 'react';
+import { VRExperience } from '../components/vr/vr-experience';
+import '../styles/vr-experience.css';
+
+const ArVrExperiencePage: React.FC = () => {
   return (
-    <main className="min-h-screen bg-background">
-      <Navigation />
+    <div className="ar-vr-experience-page">
       <VRExperience />
-    </main>
+    </div>
   );
-}
+};
+
+export default ArVrExperiencePage;
