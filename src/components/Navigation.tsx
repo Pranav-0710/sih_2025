@@ -24,6 +24,7 @@ export function Navigation() {
     { name: "Emergency", path: "/emergency" },
     { name: "Weather", path: "/weather" },
     { name: "Bookings", path: "/bookings" },
+    { name: "FunScapes", path: "/funscapes" },
     ...(user
       ? [
           { name: "Sentiment Analysis", path: "/sentiment-analysis" },
