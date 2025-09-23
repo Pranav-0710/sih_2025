@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 import { PanoramaViewer } from "./panorama-viewer"
 import { TriviaQuiz } from "./trivia-quiz"
+import Navigation from "../Navigation"
 
 export function VRExperience() {
   const [currentLocation, setCurrentLocation] = useState<string | null>(null)
@@ -96,6 +97,8 @@ export function VRExperience() {
   }
 
   return (
+    <>
+    <Navigation />
     <div className="relative min-h-screen overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-sky-50 via-blue-50 to-emerald-50 dark:from-slate-900 dark:via-blue-900 dark:to-emerald-900">
@@ -139,7 +142,7 @@ export function VRExperience() {
                     {/* Image Container */}
                     <div className="relative h-3/5 overflow-hidden">
                       <img
-                        src={location.image || "/placeholder.svg"}
+                        src={location.image}
                         alt={location.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
@@ -230,6 +233,7 @@ export function VRExperience() {
         </div>
       </section>
     </div>
+    </>
   )
 }
 
@@ -240,7 +244,7 @@ const locations = [
     type: "Capital City",
     description:
       "Explore the vibrant capital with its Rock Garden, serene lakes, and the magnificent Jagannath Temple.",
-    image: "/ranchi-city-skyline-with-rock-garden-and-jagannath.jpg",
+    image: "/vr-assets/public/ranchi-city-skyline-with-rock-garden-and-jagannath.png",
     panoramaImage: "https://skybox.blockadelabs.com/e/81d9645406fd4473fdfe69d9c41dbb33",
     audioTracks: [
       {
@@ -331,7 +335,7 @@ const locations = [
     type: "Hill Station",
     description:
       "Witness breathtaking sunrise views from the Queen of Chotanagpur, surrounded by rolling hills and valleys.",
-    image: "/netarhat-sunrise-point-with-hills-and-valleys-gold.jpg",
+    image: "/vr-assets/public/netarhat-sunrise-point-with-hills-and-valleys-gold.jpg",
     panoramaImage: "https://skybox.blockadelabs.com/e/63ea828f078df2aaf7f997646152a55e",
     audioTracks: [
       {
@@ -386,7 +390,7 @@ const locations = [
     name: "Betla National Park",
     type: "Wildlife Sanctuary",
     description: "Embark on a virtual safari through dense forests home to tigers, elephants, and diverse wildlife.",
-    image: "/betla-national-park-forest-with-tigers-and-elephan.jpg",
+    image: "/vr-assets/public/betla-national-park-forest-with-tigers-and-elephan.jpg",
     panoramaImage: "https://skybox.blockadelabs.com/e/7844f8170cf5ee2ff867e0974acd2c05",
     audioTracks: [
       {
@@ -450,7 +454,7 @@ const locations = [
     name: "Hazaribagh",
     type: "Lake District",
     description: "Discover the tranquil beauty of Hazaribagh Lake surrounded by scenic hills and wildlife sanctuary.",
-    image: "/hazaribagh-lake-with-surrounding-hills-and-peacefu.jpg",
+    image: "/vr-assets/public/hazaribagh-lake-with-surrounding-hills-and-peacefu.jpg",
     panoramaImage: "https://skybox.blockadelabs.com/e/c0440d5e3eb80297993af103a3a20740",
     hotspots: [
       {
@@ -478,7 +482,7 @@ const locations = [
     name: "Tribal Villages",
     type: "Cultural Heritage",
     description: "Immerse yourself in authentic tribal life, traditional crafts, and age-old customs.",
-    image: "/jharkhand-tribal-village-with-traditional-huts-and.jpg",
+    image: "/vr-assets/public/jharkhand-tribal-village-with-traditional-huts-and.jpg",
     panoramaImage: "https://skybox.blockadelabs.com/e/5659f214dc39b2452317dc1d14810297",
     hotspots: [
       {
@@ -516,7 +520,7 @@ const locations = [
     name: "Lodh Falls",
     type: "Natural Wonder",
     description: "Experience the thundering beauty of Jharkhand's highest waterfall cascading through lush forests.",
-    image: "/lodh-falls-waterfall-cascading-through-green-fores.jpg",
+    image: "/vr-assets/public/lodh-falls-waterfall-cascading-through-green-fores.jpg",
     panoramaImage: "https://skybox.blockadelabs.com/e/7cc0b02cfcdeeab983e00eedf2ed47b9",
     hotspots: [
       {

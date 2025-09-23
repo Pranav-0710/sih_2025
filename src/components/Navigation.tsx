@@ -1,14 +1,14 @@
+import { useIsMobile } from "@/hooks/use-mobile";
+// Update the import path if your hook is actually at src/hooks/useAuth.ts
+import { useAuth } from "@/hooks/useAuth";
+import { MapPin, LogOut, CaseSensitive, Menu } from "lucide-react";
+import { useFontSize } from "./FontSizeProvider";
+import { useNavigate } from "react-router-dom";
+import { ModeToggle } from "@/components/mode-toggle";
 import { Link, NavLink } from "react-router-dom";
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Menu } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
-// Update the import path if your hook is actually at src/hooks/useAuth.ts
-import { useAuth } from "@/hooks/useAuth";
-import { MapPin, LogOut, CaseSensitive } from "lucide-react";
-import { useFontSize } from "./FontSizeProvider";
-import { useNavigate } from "react-router-dom";
 
 export function Navigation() {
   const isMobile = useIsMobile();
@@ -17,10 +17,9 @@ export function Navigation() {
   const navigate = useNavigate();
 
   const navItems = [
-    { name: "Explore", path: "/explore" },
     { name: "Heritage", path: "/heritage" },
     { name: "Community", path: "/community" },
-    { name: "TripGenie", path: "/tripgenie" },
+    { name: "TripGenie", path: "/trip-genie" },
     { name: "VR Experience", path: "/vr-experience" },
     { name: "Emergency", path: "/emergency" },
     { name: "Weather", path: "/weather" },
@@ -85,6 +84,10 @@ export function Navigation() {
                 )}
                 <div className="border-t border-border pt-4 pb-3 mt-4">
                   <div className="flex items-center justify-between px-3">
+                    <span className="text-sm text-muted-foreground">Theme</span>
+                    <ModeToggle />
+                  </div>
+                  <div className="flex items-center justify-between px-3 mt-2">
                     <span className="text-sm text-muted-foreground">Accessibility</span>
                     <Button variant="ghost" size="icon" onClick={toggleLargeFont} aria-label="Toggle font size">
                       <CaseSensitive className={`h-5 w-5 ${isLargeFont ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -106,20 +109,13 @@ export function Navigation() {
                         </Button>
                       </div>
                     ) : (
-                      <>
-                        <Button
-                          variant="ghost"
-                          onClick={() => navigate('/auth')}
-                        >
-                          Sign In
-                        </Button>
-                        <Button
-                          variant="default"
-                          onClick={() => navigate('/auth')}
-                        >
-                          Get Started
-                        </Button>
-                      </>
+                      <Button
+                        variant="default"
+                        onClick={() => navigate('/auth')}
+                        className="w-full"
+                      >
+                        Get Started
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -152,6 +148,7 @@ export function Navigation() {
                   {item.name}
                 </NavLink>
               ))}
+              {/* Conditional rendering based on user authentication state from useAuth hook */}
               {role === 'admin' && (
                 <NavLink
                   to="/dashboard"
@@ -169,29 +166,31 @@ export function Navigation() {
               <Button variant="ghost" size="icon" onClick={toggleLargeFont} aria-label="Toggle font size">
                 <CaseSensitive className={`h-5 w-5 ${isLargeFont ? 'text-primary' : 'text-muted-foreground'}`} />
               </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="text-base font-medium text-foreground/60 hover:text-foreground/80"
-                  >
-                    {user ? user.user_metadata?.full_name || user.email : "Account"}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {user ? (
-                    <>
-                      <DropdownMenuItem onClick={() => navigate('/dashboard')}>Dashboard</DropdownMenuItem>
-                      <DropdownMenuItem onClick={signOut}>Sign Out</DropdownMenuItem>
-                    </>
-                  ) : (
-                    <>
-                      <DropdownMenuItem onClick={() => navigate('/auth')}>Sign In</DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => navigate('/auth')}>Get Started</DropdownMenuItem>
-                    </>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <ModeToggle />
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="text-base font-medium text-foreground/60 hover:text-foreground/80 border border-gray-200 rounded-md px-3 py-2"
+                    >
+                      {user.user_metadata?.full_name || user.email}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
+                    <DropdownMenuItem onClick={signOut}>Sign Out</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button
+                  variant="default"
+                  onClick={() => navigate('/auth')}
+                  className="font-medium px-4 py-2 rounded-md"
+                >
+                  Get Started
+                </Button>
+              )}
             </div>
           </nav>
         )}
