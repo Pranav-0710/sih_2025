@@ -1,280 +1,202 @@
-import { Button } from "@/components/ui/button";
-import { MapPin, Menu, X, LogOut, CaseSensitive } from "lucide-react";
-import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+// Update the import path if your hook is actually at src/hooks/useAuth.ts
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { MapPin, LogOut, CaseSensitive, Menu } from "lucide-react";
 import { useFontSize } from "./FontSizeProvider";
+import { useNavigate } from "react-router-dom";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Link, NavLink } from "react-router-dom";
+import { Button } from "./ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
-const Navigation = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [exploreDropdownOpen, setExploreDropdownOpen] = useState(false);
-  const [dashboardDropdownOpen, setDashboardDropdownOpen] = useState(false);
-  const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
+export function Navigation() {
+  const isMobile = useIsMobile();
   const { user, signOut, role } = useAuth();
-  const navigate = useNavigate();
   const { toggleLargeFont, isLargeFont } = useFontSize();
+  const navigate = useNavigate();
+
+  const navItems = [
+    { name: "Heritage", path: "/heritage" },
+    { name: "Community", path: "/community" },
+    { name: "TripGenie", path: "/trip-genie" },
+    { name: "VR Experience", path: "/vr-experience" },
+    { name: "Emergency", path: "/emergency" },
+    { name: "Weather", path: "/weather" },
+    { name: "Bookings", path: "/bookings" },
+    { name: "Sentiment Analysis", path: "/sentiment-analysis" },
+  ];
 
   return (
-    <nav className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50 shadow-soft">
-      <div className="container mx-auto px-4 lg:px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center space-x-2 hover:opacity-80 transition-smooth"
-          >
-            <div className="bg-gradient-hero p-2 rounded-lg shadow-soft">
-              <MapPin className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-foreground">Smart Tourism</h1>
-              <p className="text-xs text-muted-foreground">Jharkhand</p>
-            </div>
-          </button>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <button
-              onClick={() => navigate('/')}
-              className="text-foreground hover:text-primary transition-smooth"
-            >
-              Home
-            </button>
-
-            <div>
-              <DropdownMenu open={exploreDropdownOpen} onOpenChange={setExploreDropdownOpen} modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="text-foreground hover:text-primary transition-smooth"
-                  >
-                    Explore
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  <DropdownMenuItem onClick={() => navigate('/heritage')}>Heritage</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/ar-vr-experience')}>AR/VR Experience</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/trip-genie')}>Trip Genie</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/community')}>Community</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            {role === 'admin' && (
-              <div>
-                <DropdownMenu open={dashboardDropdownOpen} onOpenChange={setDashboardDropdownOpen} modal={false}>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="text-foreground hover:text-primary transition-smooth"
-                    >
-                      Dashboard
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuItem onClick={() => navigate('/dashboard')}>Dashboard</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/bookings')}>Bookings</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )}
-
-            <div>
-              <DropdownMenu open={moreDropdownOpen} onOpenChange={setMoreDropdownOpen} modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="text-foreground hover:text-primary transition-smooth"
-                  >
-                    More
-                  </Button>
-                </DropdownMenuTrigger>
-                                  <DropdownMenuContent className="w-56">
-                                    {role === 'admin' && (
-                                      <DropdownMenuItem onClick={() => navigate('/sentiment-analysis')}>Sentiment Analysis</DropdownMenuItem>
-                                    )}
-                                    <DropdownMenuItem onClick={() => navigate('/transport')}>Transport</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => navigate('/emergency')}>Emergency</DropdownMenuItem>
-                                  </DropdownMenuContent>              </DropdownMenu>
-            </div>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 items-center">
+        <Link to="/" className="mr-6 flex items-center space-x-2">
+          <div className="bg-gradient-hero p-2 rounded-lg shadow-soft">
+            <MapPin className="h-6 w-6 text-white" />
           </div>
+          <span className="hidden font-bold sm:inline-block">Smart Tourism</span>
+        </Link>
 
-          {/* Desktop Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="icon" onClick={toggleLargeFont} aria-label="Toggle font size">
-              <CaseSensitive className={`h-5 w-5 ${isLargeFont ? 'text-primary' : 'text-muted-foreground'}`} />
-            </Button>
-            {user ? (
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-muted-foreground">
-                  {user.user_metadata?.full_name || user.email}
-                </span>
-                <Button variant="ghost" onClick={signOut} size="sm">
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
-                </Button>
-              </div>
-            ) : (
-              <>
-                <Button variant="ghost" onClick={() => navigate('/auth')}>Sign In</Button>
-                <Button variant="heritage" onClick={() => navigate('/auth')}>Get Started</Button>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <button
-                onClick={() => {
-                  navigate('/');
-                  setIsMenuOpen(false);
-                }}
-                className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent hover:text-accent-foreground
-rounded-md transition-smooth"
+        {isMobile ? (
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
-                Home
-              </button>
-
-              <div>
-                <DropdownMenu open={exploreDropdownOpen} onOpenChange={setExploreDropdownOpen} modal={false}>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent
-hover:text-accent-foreground rounded-md transition-smooth"
-                    >
-                      Explore
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuItem onClick={() => { navigate('/heritage'); setIsMenuOpen(false);
-}}>Heritage</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => { navigate('/ar-vr-experience'); setIsMenuOpen(false); }}>AR/VR
-Experience</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => { navigate('/trip-genie'); setIsMenuOpen(false); }}>Trip
-Genie</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => { navigate('/community'); setIsMenuOpen(false);
-}}>Community</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-
-              {role === 'admin' && (
-                <div>
-                  <DropdownMenu open={dashboardDropdownOpen} onOpenChange={setDashboardDropdownOpen} modal={false}>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent
-hover:text-accent-foreground rounded-md transition-smooth"
-                      >
-                        Dashboard
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56">
-                      <DropdownMenuItem onClick={() => { navigate('/dashboard'); setIsMenuOpen(false);
-}}>Dashboard</DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => { navigate('/bookings'); setIsMenuOpen(false);
-}}>Bookings</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="pr-0">
+              <Link to="/" className="flex items-center space-x-2">
+                <div className="bg-gradient-hero p-2 rounded-lg shadow-soft">
+                  <MapPin className="h-6 w-6 text-white" />
                 </div>
-              )}
-
-              <div>
-                <DropdownMenu open={moreDropdownOpen} onOpenChange={setMoreDropdownOpen} modal={false}>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className="block w-full text-left px-3 py-2 text-foreground hover:bg-accent
-hover:text-accent-foreground rounded-md transition-smooth"
-                    >
-                      More
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    {role === 'admin' && (
-                      <DropdownMenuItem onClick={() => { navigate('/sentiment-analysis'); setIsMenuOpen(false); }}>Sentiment
-Analysis</DropdownMenuItem>
-                    )}
-                    <DropdownMenuItem onClick={() => { navigate('/emergency'); setIsMenuOpen(false);
-}}>Emergency</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-
-              <div className="border-t border-border pt-4 pb-3">
-                <div className="flex items-center justify-between px-3">
-                  <span className="text-sm text-muted-foreground">Accessibility</span>
-                  <Button variant="ghost" size="icon" onClick={toggleLargeFont} aria-label="Toggle font size">
-                    <CaseSensitive className={`h-5 w-5 ${isLargeFont ? 'text-primary' : 'text-muted-foreground'}`} />
-                  </Button>
-                </div>
-                <div className="flex flex-col space-y-2 mt-4">
-                  {user ? (
-                    <div className="space-y-2">
-                      <p className="text-sm text-muted-foreground px-3">
-                        {user.user_metadata?.full_name || user.email}
-                      </p>
+                <span className="font-bold">Smart Tourism</span>
+              </Link>
+              <nav className="grid gap-2 text-lg font-medium mt-4">
+                {navItems.map((item) => (
+                  <NavLink
+                    key={item.name}
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `mx-[-0.65rem] flex items-center rounded-lg px-3 py-2 hover:text-foreground/80 ${
+                        isActive ? "text-foreground" : "text-foreground/60"
+                      }`
+                    }
+                  >
+                    {item.name}
+                  </NavLink>
+                ))}
+                {role === 'admin' && (
+                  <NavLink
+                    to="/dashboard"
+                    className={({ isActive }) =>
+                      `mx-[-0.65rem] flex items-center rounded-lg px-3 py-2 hover:text-foreground/80 ${
+                        isActive ? "text-foreground" : "text-foreground/60"
+                      }`
+                    }
+                  >
+                    Dashboard
+                  </NavLink>
+                )}
+                <div className="border-t border-border pt-4 pb-3 mt-4">
+                  <div className="flex items-center justify-between px-3">
+                    <span className="text-sm text-muted-foreground">Theme</span>
+                    <ModeToggle />
+                  </div>
+                  <div className="flex items-center justify-between px-3 mt-2">
+                    <span className="text-sm text-muted-foreground">Accessibility</span>
+                    <Button variant="ghost" size="icon" onClick={toggleLargeFont} aria-label="Toggle font size">
+                      <CaseSensitive className={`h-5 w-5 ${isLargeFont ? 'text-primary' : 'text-muted-foreground'}`} />
+                    </Button>
+                  </div>
+                  <div className="flex flex-col space-y-2 mt-4">
+                    {user ? (
+                      <div className="space-y-2">
+                        <p className="text-sm text-muted-foreground px-3">
+                          {user.user_metadata?.full_name || user.email}
+                        </p>
+                        <Button
+                          variant="ghost"
+                          onClick={signOut}
+                          className="w-full justify-start"
+                        >
+                          <LogOut className="h-4 w-4 mr-2" />
+                          Sign Out
+                        </Button>
+                      </div>
+                    ) : (
                       <Button
-                        variant="ghost"
-                        onClick={() => {
-                          signOut();
-                          setIsMenuOpen(false);
-                        }}
-                        className="w-full justify-start"
-                      >
-                        <LogOut className="h-4 w-4 mr-2" />
-                        Sign Out
-                      </Button>
-                    </div>
-                  ) : (
-                    <>
-                      <Button
-                        variant="ghost"
-                        onClick={() => {
-                          navigate('/auth');
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        Sign In
-                      </Button>
-                      <Button
-                        variant="heritage"
-                        onClick={() => {
-                          navigate('/auth');
-                          setIsMenuOpen(false);
-                        }}
+                        variant="default"
+                        onClick={() => navigate('/auth')}
+                        className="w-full"
                       >
                         Get Started
                       </Button>
-                    </>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        ) : (
+          <nav className="flex flex-1 items-center justify-between space-x-6 text-sm font-medium">
+            <div className="flex items-center space-x-6">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `transition-colors hover:text-foreground/80 ${
+                    isActive ? "text-foreground" : "text-foreground/60"
+                  }`
+                }
+              >
+                Home
+              </NavLink>
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `transition-colors hover:text-foreground/80 ${
+                      isActive ? "text-foreground" : "text-foreground/60"
+                    }`
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              ))}
+              {/* Conditional rendering based on user authentication state from useAuth hook */}
+              {role === 'admin' && (
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    `transition-colors hover:text-foreground/80 ${
+                      isActive ? "text-foreground" : "text-foreground/60"
+                    }`
+                  }
+                >
+                  Dashboard
+                </NavLink>
+              )}
             </div>
-          </div>
+            <div className="flex items-center space-x-4">
+              <Button variant="ghost" size="icon" onClick={toggleLargeFont} aria-label="Toggle font size">
+                <CaseSensitive className={`h-5 w-5 ${isLargeFont ? 'text-primary' : 'text-muted-foreground'}`} />
+              </Button>
+              <ModeToggle />
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="text-base font-medium text-foreground/60 hover:text-foreground/80 border border-gray-200 rounded-md px-3 py-2"
+                    >
+                      {user.user_metadata?.full_name || user.email}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
+                    <DropdownMenuItem onClick={signOut}>Sign Out</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button
+                  variant="default"
+                  onClick={() => navigate('/auth')}
+                  className="font-medium px-4 py-2 rounded-md"
+                >
+                  Get Started
+                </Button>
+              )}
+            </div>
+          </nav>
         )}
       </div>
-    </nav>
+    </header>
   );
-};
+}
 
 export default Navigation;

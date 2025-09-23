@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Link } from "react-router-dom";
 import { AuthProvider } from "@/components/AuthProvider";
 import { FontSizeProvider } from "@/components/FontSizeProvider";
+import { ThemeProvider } from "@/components/theme-provider"; // Import ThemeProvider
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import TripGenie from "./pages/TripGenie";
@@ -27,13 +28,15 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <FontSizeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <MainLayout />
-          </BrowserRouter>
-        </TooltipProvider>
+        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme" attribute="class" enableSystem={true}> {/* Wrap with ThemeProvider */}
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <MainLayout />
+            </BrowserRouter>
+          </TooltipProvider>
+        </ThemeProvider>
       </FontSizeProvider>
     </AuthProvider>
   </QueryClientProvider>
@@ -53,6 +56,7 @@ const MainLayout = () => {
         <Route path="/community" element={<Community />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/emergency" element={<Emergency />} />
+        <Route path="/vr-experience" element={<VRExperiencePage />} />
         <Route element={<AdminRoute />}>
           <Route path="/sentiment-analysis" element={<SentimentAnalysis />} />
           <Route path="/dashboard" element={<Dashboard />} />
