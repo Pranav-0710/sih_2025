@@ -265,7 +265,7 @@ export function HiddenAnimalGame({ onBack, onScoreUpdate }: HiddenAnimalGameProp
                     style={{ transform: `scale(${zoomLevel})` }}
                   >
                     <img
-                      src="/dense-forest-with-hidden-animals-in-jharkhand.jpg"
+                      src="/images/funscapes/dense-forest-with-hidden-animals-in-jharkhand.jpg"
                       alt="Dense forest scene with hidden animals"
                       className="w-full h-[500px] object-cover"
                     />
