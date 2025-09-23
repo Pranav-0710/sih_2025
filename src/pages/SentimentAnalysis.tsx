@@ -13,8 +13,6 @@ import { Brain, TrendingUp, TrendingDown, Minus, BarChart3, Heart, MessageSquare
 interface SentimentResult {
   sentiment: 'positive' | 'negative' | 'neutral';
   confidence: number;
-  emotions: string[];
-  summary: string;
 }
 
 interface AnalysisItem {
@@ -22,8 +20,6 @@ interface AnalysisItem {
   id: string;
   sentiment: 'positive' | 'negative' | 'neutral';
   confidence: number;
-  emotions: string[];
-  summary: string;
   content: string;
   rating?: number;
 }
@@ -34,7 +30,6 @@ interface Statistics {
   negative: number;
   neutral: number;
   averageConfidence: number;
-  topEmotions: { emotion: string; count: number; }[];
 }
 
 const SentimentAnalysis = () => {
@@ -233,24 +228,6 @@ const SentimentAnalysis = () => {
                           </div>
                         </div>
                       </div>
-                      
-                      <div>
-                        <label className="text-sm font-medium">Detected Emotions</label>
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          {singleResult.emotions.map((emotion, index) => (
-                            <Badge key={index} variant="outline">
-                              {emotion}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium">Summary</label>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {singleResult.summary}
-                        </p>
-                      </div>
                     </CardContent>
                   </Card>
                 )}
@@ -379,25 +356,6 @@ const SentimentAnalysis = () => {
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Top Emotions Detected</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      {statistics.topEmotions.slice(0, 6).map((emotion, index) => (
-                        <div key={index} className="flex justify-between items-center">
-                          <Badge variant="outline" className="capitalize">
-                            {emotion.emotion}
-                          </Badge>
-                          <span className="text-sm text-muted-foreground">
-                            {emotion.count}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
             )}
 
@@ -444,17 +402,6 @@ const SentimentAnalysis = () => {
                           {item.content}
                         </p>
                         
-                        <div className="flex flex-wrap gap-1">
-                          {item.emotions.slice(0, 3).map((emotion, emotionIndex) => (
-                            <Badge key={emotionIndex} variant="outline" className="text-xs">
-                              {emotion}
-                            </Badge>
-                          ))}
-                        </div>
-                        
-                        <p className="text-xs text-muted-foreground italic">
-                          {item.summary}
-                        </p>
                       </div>
                     ))}
                   </div>
