@@ -95,13 +95,13 @@ const Navigation = () => {
                     More
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                  {role === 'admin' && (
-                    <DropdownMenuItem onClick={() => navigate('/sentiment-analysis')}>Sentiment Analysis</DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem onClick={() => navigate('/emergency')}>Emergency</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                                  <DropdownMenuContent className="w-56">
+                                    {role === 'admin' && (
+                                      <DropdownMenuItem onClick={() => navigate('/sentiment-analysis')}>Sentiment Analysis</DropdownMenuItem>
+                                    )}
+                                    <DropdownMenuItem onClick={() => navigate('/transport')}>Transport</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => navigate('/emergency')}>Emergency</DropdownMenuItem>
+                                  </DropdownMenuContent>              </DropdownMenu>
             </div>
           </div>
 
