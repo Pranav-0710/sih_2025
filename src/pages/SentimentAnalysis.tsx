@@ -228,8 +228,6 @@ const SentimentAnalysis = () => {
                           </div>
                         </div>
                       </div>
-                      
-                      
                     </CardContent>
                   </Card>
                 )}
@@ -358,7 +356,6 @@ const SentimentAnalysis = () => {
                   </CardContent>
                 </Card>
 
-                
               </div>
             )}
 
@@ -404,7 +401,6 @@ const SentimentAnalysis = () => {
                         <p className="text-sm text-muted-foreground">
                           {item.content}
                         </p>
-                        
                         
                       </div>
                     ))}
