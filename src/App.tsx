@@ -16,6 +16,7 @@ import Emergency from "./pages/Emergency";
 import SentimentAnalysis from "./pages/SentimentAnalysis";
 import Dashboard from "./pages/Dashboard";
 import VRExperiencePage from "./pages/VRExperience";
+import Transport from "./pages/Transport";
 import NotFound from "./pages/NotFound";
 import sosIcon from "@/assets/sos.png";
 
@@ -61,6 +62,7 @@ const MainLayout = () => {
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
         <Route path="/ar-vr-experience" element={<VRExperiencePage />} />
+        <Route path="/transport" element={<Transport />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
