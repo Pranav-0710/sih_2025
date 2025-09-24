@@ -18,17 +18,17 @@ export function Navigation() {
 
   const navItems = [
     { name: "Trip Genie", path: "/trip-genie" },
-    { name: "Bookings", path: "/bookings" },
-    { name: "Sentiment Analysis", path: "/sentiment-analysis", adminOnly: true },
+    { name: "Journey Hub", path: "/bookings" },
+    { name: "Feedback Analysis", path: "/sentiment-analysis", adminOnly: true },
     {
       name: "Explore",
       isDropdown: true,
       dropdownItems: [
-        { name: "Heritage", path: "/heritage" },
-        { name: "VR Experience", path: "/vr-experience" },
+        { name: "Heritage Trails", path: "/heritage" },
+        { name: "Virtual 360", path: "/vr-experience" },
         { name: "FunScapes", path: "/funscapes" },
         { name: "Gen-Z Corner", path: "/genzcorner" },
-        { name: "Transport", path: "/transport" },
+        { name: "RouteX", path: "/transport" },
       ],
     },
     { name: "Community", path: "/community" },

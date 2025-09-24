@@ -120,6 +120,34 @@ const Community = () => {
     }
   };
 
+  const handleDeletePost = async (postId: string) => {
+    if (!confirm("Are you sure you want to delete this post?")) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('community_posts')
+        .delete()
+        .eq('id', postId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Post deleted successfully!",
+      });
+      fetchPosts();
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete post",
+        variant: "destructive",
+      });
+    }
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
       year: 'numeric',
@@ -243,6 +271,11 @@ const Community = () => {
                       </div>
                     )}
                   </div>
+                  {user?.id === post.user_id && (
+                    <Button variant="destructive" size="sm" onClick={() => handleDeletePost(post.id)}>
+                      Delete
+                    </Button>
+                  )}
                 </div>
                 
                 {post.title && (
