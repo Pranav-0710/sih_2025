@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Bot, Sparkles, MessageCircle, ArrowRight, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const TripGeniePreview = () => {
   return (
@@ -53,15 +54,17 @@ const TripGeniePreview = () => {
               </div>
             </div>
 
-            <Button 
-              variant="heritage" 
-              size="lg" 
-              className="group shadow-glow hover:shadow-strong"
-            >
-              <Bot className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
-              Chat with Trip Genie
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <Link to="/trip-genie">
+              <Button 
+                variant="heritage" 
+                size="lg" 
+                className="group shadow-glow hover:shadow-strong"
+              >
+                <Bot className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform" />
+                Chat with Trip Genie
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
 
           {/* Demo Chat Interface */}

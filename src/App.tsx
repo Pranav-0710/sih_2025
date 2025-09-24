@@ -9,7 +9,7 @@ import { ThemeProvider } from "@/components/theme-provider"; // Import ThemeProv
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import TripGenie from "./pages/TripGenie";
-import Heritage from "./pages/Heritage";
+import { Heritage } from "./pages/Heritage";
 import Community from "./pages/Community";
 import Bookings from "./pages/Bookings";
 import Emergency from "./pages/Emergency";
@@ -20,7 +20,6 @@ import ArVrExperience from "./pages/ArVrExperience";
 import Transport from "./pages/Transport";
 import NotFound from "./pages/NotFound";
 import GenzCorner from "./pages/GenzCorner";
-import Weather from "./pages/Weather";
 import sosIcon from "@/assets/sos.png";
 
 import AdminRoute from "./components/AdminRoute";
@@ -60,14 +59,13 @@ const MainLayout = () => {
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/emergency" element={<Emergency />} />
         <Route path="/vr-experience" element={<VRExperiencePage />} />
+        <Route path="/sentiment-analysis" element={<SentimentAnalysis />} />
         <Route element={<AdminRoute />}>
-          <Route path="/sentiment-analysis" element={<SentimentAnalysis />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
         <Route path="/ar-vr-experience" element={<VRExperiencePage />} />
         <Route path="/transport" element={<Transport />} />
         <Route path="/funscapes" element={<ArVrExperience />} />
-        <Route path="/weather" element={<Weather />} />
         <Route path="/genzcorner" element={<GenzCorner />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />

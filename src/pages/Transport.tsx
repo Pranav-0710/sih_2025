@@ -212,7 +212,7 @@ const Transport = () => {
           {['Bus', 'Train', 'Cab', 'Auto-rickshaw'].map(type => (
             <div key={type} className="flex items-center space-x-3">
               <Checkbox id={`filter-${type}`} checked={filters[type]} onCheckedChange={(c) => setFilters(f => ({...f, [type]: c}))} />
-              <Label htmlFor={`filter-${type}`} className="text-sm font-medium leading-none">{type}s</Label>
+              <Label htmlFor={`filter-${type}`} className="text-sm font-medium leading-none">{type === 'Bus' ? 'Buses' : `${type}s`}</Label>
             </div>
           ))}
         </div>

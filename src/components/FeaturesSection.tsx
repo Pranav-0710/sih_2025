@@ -10,6 +10,7 @@ import {
   Compass,
   Camera
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import heritageImage from "@/assets/heritage-site.png";
 import tribalImage from "@/assets/tribal-culture.png";
 import natureImage from "@/assets/nature-wildlife.png";
@@ -49,42 +50,48 @@ const FeaturesSection = () => {
       title: "Trip Genie AI",
       description: "Your personal AI travel assistant that creates customized itineraries based on your interests, budget, and travel style.",
       color: "heritage",
-      image: null
+      image: null,
+      path: "/trip-genie"
     },
     {
       icon: MapPin,
       title: "Cultural Heritage Hub",
       description: "Explore 50+ heritage sites with interactive maps, audio stories, and 360° virtual tours of ancient temples and tribal art.",
       color: "cultural",
-      image: heritageImage
+      image: heritageImage,
+      path: "/heritage"
     },
     {
       icon: Award,
-      title: "Heritage Badge System",
+      title: "FunScapes",
       description: "Learn through interactive quizzes and earn badges for discovering Jharkhand's rich history and tribal traditions.",
       color: "accent",
-      image: null
+      image: null,
+      path: "/funscapes"
     },
     {
       icon: Users,
       title: "Community Wall",
       description: "Connect with fellow travelers, share experiences, and discover hidden gems recommended by locals.",
       color: "nature",
-      image: tribalImage
+      image: tribalImage,
+      path: "/community"
     },
     {
       icon: Shield,
       title: "Emergency Assistance",
       description: "24/7 safety support with SOS button, emergency contacts, and real-time location sharing for remote areas.",
       color: "destructive",
-      image: null
+      image: null,
+      path: "/emergency"
     },
     {
       icon: Calendar,
-      title: "Smart Travel Intelligence",
-      description: "Get weather forecasts, crowd predictions, and festival calendars to plan your perfect Jharkhand adventure.",
+      title: "Gen-Z Corner",
+      description: "A vibrant space for the young and trendy, offering unique experiences, digital content, and interactive challenges tailored for Gen-Z travelers.",
       color: "primary",
-      image: natureImage
+      image: natureImage,
+      path: "/genzcorner"
     }
   ];
 
@@ -147,14 +154,27 @@ const FeaturesSection = () => {
                   <p className="text-muted-foreground mb-4 leading-relaxed">
                     {feature.description}
                   </p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-primary hover:text-primary-foreground hover:bg-primary p-0 h-auto font-medium group"
-                  >
-                    Learn More
-                    <Compass className="ml-1 h-3 w-3 group-hover:rotate-12 transition-transform" />
-                  </Button>
+                  {feature.path ? (
+                    <Link to={feature.path}>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-primary hover:text-primary-foreground hover:bg-primary p-0 h-auto font-medium group"
+                      >
+                        Learn More
+                        <Compass className="ml-1 h-3 w-3 group-hover:rotate-12 transition-transform" />
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-primary hover:text-primary-foreground hover:bg-primary p-0 h-auto font-medium group"
+                    >
+                      Learn More
+                      <Compass className="ml-1 h-3 w-3 group-hover:rotate-12 transition-transform" />
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>

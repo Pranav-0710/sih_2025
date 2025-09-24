@@ -19,6 +19,7 @@ export function Navigation() {
   const navItems = [
     { name: "Trip Genie", path: "/trip-genie" },
     { name: "Bookings", path: "/bookings" },
+    { name: "Sentiment Analysis", path: "/sentiment-analysis", adminOnly: true },
     {
       name: "Explore",
       isDropdown: true,
@@ -35,7 +36,7 @@ export function Navigation() {
 
   const mobileNavItems = navItems.flatMap(item =>
     item.isDropdown ? item.dropdownItems : item
-  );
+  ).filter(item => !item.adminOnly || (item.adminOnly && role === 'admin'));
 
   return (
     <header className="sticky top-0 z-50 w-full bg-transparent backdrop-blur">
@@ -156,8 +157,11 @@ export function Navigation() {
                 >
                   Home
                 </NavLink>
-                {navItems.map((item) =>
-                  item.isDropdown ? (
+                {navItems.map((item) => {
+                  if (item.adminOnly && role !== 'admin') {
+                    return null;
+                  }
+                  return item.isDropdown ? (
                     <DropdownMenu key={item.name}>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="transition-colors hover:text-foreground/80 text-foreground/60">
@@ -184,8 +188,8 @@ export function Navigation() {
                     >
                       {item.name}
                     </NavLink>
-                  )
-                )}
+                  );
+                })}
                 {role === 'admin' && (
                   <NavLink
                     to="/dashboard"
