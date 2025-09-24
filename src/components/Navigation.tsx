@@ -17,28 +17,24 @@ export function Navigation() {
   const navigate = useNavigate();
 
   const navItems = [
-    { name: "Trip Genie", path: "/trip-genie" },
-    { name: "Bookings", path: "/bookings" },
-    {
-      name: "Explore",
-      isDropdown: true,
-      dropdownItems: [
-        { name: "Heritage", path: "/heritage" },
-        { name: "VR Experience", path: "/vr-experience" },
-        { name: "FunScapes", path: "/funscapes" },
-        { name: "Gen-Z Corner", path: "/genzcorner" },
-        { name: "Transport", path: "/transport" },
-      ],
-    },
+    { name: "Heritage", path: "/heritage" },
     { name: "Community", path: "/community" },
+    { name: "TripGenie", path: "/trip-genie" },
+    { name: "VR Experience", path: "/vr-experience" },
+    { name: "Emergency", path: "/emergency" },
+
+    { name: "Bookings", path: "/bookings" },
+    { name: "FunScapes", path: "/funscapes" },
+    ...(user
+      ? [
+          { name: "Sentiment Analysis", path: "/sentiment-analysis" },
+          { name: "Transport", path: "/transport" },
+        ]
+      : []),
   ];
 
-  const mobileNavItems = navItems.flatMap(item =>
-    item.isDropdown ? item.dropdownItems : item
-  );
-
   return (
-    <header className="sticky top-0 z-50 w-full bg-transparent backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
         <Link to="/" className="mr-6 flex items-center space-x-2">
           <div className="bg-gradient-hero p-2 rounded-lg shadow-soft">
@@ -53,7 +49,7 @@ export function Navigation() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="ml-auto mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
@@ -67,17 +63,7 @@ export function Navigation() {
                 <span className="font-bold">Smart Tourism</span>
               </Link>
               <nav className="grid gap-2 text-lg font-medium mt-4">
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    `mx-[-0.65rem] flex items-center rounded-lg px-3 py-2 hover:text-foreground/80 ${
-                      isActive ? "text-foreground" : "text-foreground/60"
-                    }`
-                  }
-                >
-                  Home
-                </NavLink>
-                {mobileNavItems.map((item) => (
+                {navItems.map((item) => (
                   <NavLink
                     key={item.name}
                     to={item.path}
@@ -143,62 +129,44 @@ export function Navigation() {
             </SheetContent>
           </Sheet>
         ) : (
-          <>
-            <div className="flex-1 flex justify-center">
-              <nav className="flex items-center space-x-6 text-sm font-medium">
+          <nav className="flex flex-1 items-center justify-between space-x-6 text-sm font-medium">
+            <div className="flex items-center space-x-6">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `transition-colors hover:text-foreground/80 ${
+                    isActive ? "text-foreground" : "text-foreground/60"
+                  }`
+                }
+              >
+                Home
+              </NavLink>
+              {navItems.map((item) => (
                 <NavLink
-                  to="/"
+                  key={item.name}
+                  to={item.path}
                   className={({ isActive }) =>
                     `transition-colors hover:text-foreground/80 ${
                       isActive ? "text-foreground" : "text-foreground/60"
                     }`
                   }
                 >
-                  Home
+                  {item.name}
                 </NavLink>
-                {navItems.map((item) =>
-                  item.isDropdown ? (
-                    <DropdownMenu key={item.name}>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="transition-colors hover:text-foreground/80 text-foreground/60">
-                          {item.name}
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        {item.dropdownItems.map((dropdownItem) => (
-                          <DropdownMenuItem key={dropdownItem.name} asChild>
-                            <Link to={dropdownItem.path}>{dropdownItem.name}</Link>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  ) : (
-                    <NavLink
-                      key={item.name}
-                      to={item.path}
-                      className={({ isActive }) =>
-                        `transition-colors hover:text-foreground/80 ${
-                          isActive ? "text-foreground" : "text-foreground/60"
-                        }`
-                      }
-                    >
-                      {item.name}
-                    </NavLink>
-                  )
-                )}
-                {role === 'admin' && (
-                  <NavLink
-                    to="/dashboard"
-                    className={({ isActive }) =>
-                      `transition-colors hover:text-foreground/80 ${
-                        isActive ? "text-foreground" : "text-foreground/60"
-                      }`
-                    }
-                  >
-                    Dashboard
-                  </NavLink>
-                )}
-              </nav>
+              ))}
+              {/* Conditional rendering based on user authentication state from useAuth hook */}
+              {role === 'admin' && (
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    `transition-colors hover:text-foreground/80 ${
+                      isActive ? "text-foreground" : "text-foreground/60"
+                    }`
+                  }
+                >
+                  Dashboard
+                </NavLink>
+              )}
             </div>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="icon" onClick={toggleLargeFont} aria-label="Toggle font size">
@@ -230,7 +198,7 @@ export function Navigation() {
                 </Button>
               )}
             </div>
-          </>
+          </nav>
         )}
       </div>
     </header>
