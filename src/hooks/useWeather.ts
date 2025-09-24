@@ -22,7 +22,11 @@ interface WeatherData {
   name: string;
 }
 
+<<<<<<< HEAD
 const YOUR_OPENWEATHER_API_KEY = '151adc601d3b773a0f00c74086151d7d'; // User's actual API key
+=======
+const YOUR_OPENWEATHER_API_KEY = '151adc601d3b773a0f00c74086151d7d';
+>>>>>>> 84d0d0f04cf8c938288f265e1c4f5dbda1c7bb32
 
 export const useWeather = (lat: number | null, lon: number | null) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);

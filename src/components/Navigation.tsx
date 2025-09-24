@@ -37,9 +37,8 @@ export function Navigation() {
   const mobileNavItems = navItems.flatMap(item =>
     item.isDropdown ? item.dropdownItems : item
   ).filter(item => !item.adminOnly || (item.adminOnly && role === 'admin'));
-
   return (
-    <header className="sticky top-0 z-50 w-full bg-transparent backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
         <Link to="/" className="mr-6 flex items-center space-x-2">
           <div className="bg-gradient-hero p-2 rounded-lg shadow-soft">
@@ -54,7 +53,7 @@ export function Navigation() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="ml-auto mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
@@ -68,17 +67,7 @@ export function Navigation() {
                 <span className="font-bold">Smart Tourism</span>
               </Link>
               <nav className="grid gap-2 text-lg font-medium mt-4">
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    `mx-[-0.65rem] flex items-center rounded-lg px-3 py-2 hover:text-foreground/80 ${
-                      isActive ? "text-foreground" : "text-foreground/60"
-                    }`
-                  }
-                >
-                  Home
-                </NavLink>
-                {mobileNavItems.map((item) => (
+                {navItems.map((item) => (
                   <NavLink
                     key={item.name}
                     to={item.path}
@@ -144,101 +133,61 @@ export function Navigation() {
             </SheetContent>
           </Sheet>
         ) : (
-          <>
-            <div className="flex-1 flex justify-center">
-              <nav className="flex items-center space-x-6 text-sm font-medium">
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    `transition-colors hover:text-foreground/80 ${
-                      isActive ? "text-foreground" : "text-foreground/60"
-                    }`
-                  }
-                >
-                  Home
-                </NavLink>
-                {navItems.map((item) => {
-                  if (item.adminOnly && role !== 'admin') {
-                    return null;
-                  }
-                  return item.isDropdown ? (
-                    <DropdownMenu key={item.name}>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="transition-colors hover:text-foreground/80 text-foreground/60">
-                          {item.name}
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        {item.dropdownItems.map((dropdownItem) => (
-                          <DropdownMenuItem key={dropdownItem.name} asChild>
-                            <Link to={dropdownItem.path}>{dropdownItem.name}</Link>
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  ) : (
-                    <NavLink
-                      key={item.name}
-                      to={item.path}
-                      className={({ isActive }) =>
-                        `transition-colors hover:text-foreground/80 ${
-                          isActive ? "text-foreground" : "text-foreground/60"
-                        }`
-                      }
-                    >
-                      {item.name}
-                    </NavLink>
-                  );
-                })}
-                {role === 'admin' && (
-                  <NavLink
-                    to="/dashboard"
-                    className={({ isActive }) =>
-                      `transition-colors hover:text-foreground/80 ${
-                        isActive ? "text-foreground" : "text-foreground/60"
-                      }`
-                    }
-                  >
-                    Dashboard
-                  </NavLink>
-                )}
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon" onClick={toggleLargeFont} aria-label="Toggle font size">
-                <CaseSensitive className={`h-5 w-5 ${isLargeFont ? 'text-primary' : 'text-muted-foreground'}`} />
-              </Button>
-              <ModeToggle />
-              {user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="text-base font-medium text-foreground/60 hover:text-foreground/80 border border-gray-200 rounded-md px-3 py-2"
-                    >
-                      {user.user_metadata?.full_name || user.email}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => navigate('/profile')}>Profile</DropdownMenuItem>
-                    <DropdownMenuItem onClick={signOut}>Sign Out</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Button
-                  variant="default"
-                  onClick={() => navigate('/auth')}
-                  className="font-medium px-4 py-2 rounded-md"
-                >
-                  Get Started
-                </Button>
-              )}
-            </div>
-          </>
-        )}
-      </div>
-    </header>
-  );
-}
-
-export default Navigation;
+          <nav className="flex flex-1 items-center justify-between space-x-6 text-sm font-medium">
+            <div className="flex items-center space-x-6">
+                              <NavLink
+                                to="/"
+                                className={({ isActive }) =>
+                                  `transition-colors hover:text-foreground/80 ${
+                                    isActive ? "text-foreground" : "text-foreground/60"
+                                  }`
+                                }
+                              >
+                                Home
+                              </NavLink>
+                              {navItems.map((item) => {
+                                if (item.adminOnly && role !== 'admin') {
+                                  return null;
+                                }
+                                return item.isDropdown ? (
+                                  <DropdownMenu key={item.name}>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button variant="ghost" className="transition-colors hover:text-foreground/80 text-foreground/60">
+                                        {item.name}
+                                      </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                      {item.dropdownItems.map((dropdownItem) => (
+                                        <DropdownMenuItem key={dropdownItem.name} asChild>
+                                          <Link to={dropdownItem.path}>{dropdownItem.name}</Link>
+                                        </DropdownMenuItem>
+                                      ))}
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
+                                ) : (
+                                  <NavLink
+                                    key={item.name}
+                                    to={item.path}
+                                    className={({ isActive }) =>
+                                      `transition-colors hover:text-foreground/80 ${
+                                        isActive ? "text-foreground" : "text-foreground/60"
+                                      }`
+                                    }
+                                  >
+                                    {item.name}
+                                  </NavLink>
+                                );
+                              })}
+                              {role === 'admin' && (
+                                <NavLink
+                                  to="/dashboard"
+                                  className={({ isActive }) =>
+                                    `transition-colors hover:text-foreground/80 ${
+                                      isActive ? "text-foreground" : "text-foreground/60"
+                                    }`
+                                  }
+                                >
+                                  Dashboard
+                                </NavLink>
+                              )}
+                            </nav>

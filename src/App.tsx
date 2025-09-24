@@ -66,8 +66,8 @@ const MainLayout = () => {
         <Route path="/ar-vr-experience" element={<VRExperiencePage />} />
         <Route path="/transport" element={<Transport />} />
         <Route path="/funscapes" element={<ArVrExperience />} />
+        <Route path="/funscapes" element={<ArVrExperience />} />
         <Route path="/genzcorner" element={<GenzCorner />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showSOSButton && (
