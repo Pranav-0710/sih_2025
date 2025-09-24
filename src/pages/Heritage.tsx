@@ -180,8 +180,8 @@ const Heritage: React.FC = () => {
     <>
     <Navigation />
     <div
-      className="relative w-full min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url(/images/map.png)", perspective: "1000px" }}
+      className="relative w-full min-h-screen bg-gray-900 flex items-center justify-center"
+      style={{ perspective: "1000px" }}
     >
       <div className="absolute inset-0 bg-black bg-opacity-40" />
       <div className="relative z-10 flex flex-col items-center w-full h-full min-h-screen p-4">
@@ -236,9 +236,13 @@ const Heritage: React.FC = () => {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          className="relative w-full max-w-4xl" 
+          className="relative w-full max-w-4xl h-[600px] bg-cover bg-center rounded-lg shadow-2xl"
+          
         >
-          <div style={{ aspectRatio: '1088 / 960', transform: "translateZ(0)" }}>
+          <div
+            className="absolute inset-0 bg-cover bg-center rounded-lg"
+            style={{ backgroundImage: "url(/images/map.png)" }}
+          ></div>
             {/* Markers */}
             {filteredSpots.map((spot, index) => {
               const originalIndex = spots.findIndex(s => s.name === spot.name);
@@ -297,7 +301,6 @@ const Heritage: React.FC = () => {
                 </Card>
               </motion.div>
             )}
-          </div>
         </motion.div>
       </div>
     </div>

@@ -19,6 +19,7 @@ import VRExperiencePage from "./pages/VRExperience";
 import ArVrExperience from "./pages/ArVrExperience";
 import Transport from "./pages/Transport";
 import NotFound from "./pages/NotFound";
+import GenzCorner from "./pages/GenzCorner";
 import Weather from "./pages/Weather";
 import sosIcon from "@/assets/sos.png";
 
@@ -67,6 +68,7 @@ const MainLayout = () => {
         <Route path="/transport" element={<Transport />} />
         <Route path="/funscapes" element={<ArVrExperience />} />
         <Route path="/weather" element={<Weather />} />
+        <Route path="/genzcorner" element={<GenzCorner />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>

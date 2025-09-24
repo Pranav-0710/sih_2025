@@ -25,6 +25,7 @@ export function Navigation() {
     { name: "Weather", path: "/weather" },
     { name: "Bookings", path: "/bookings" },
     { name: "FunScapes", path: "/funscapes" },
+    { name: "Gen-Z Corner", path: "/genzcorner" },
     ...(user
       ? [
           { name: "Sentiment Analysis", path: "/sentiment-analysis" },
@@ -34,7 +35,7 @@ export function Navigation() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full bg-transparent backdrop-blur">
       <div className="container flex h-14 items-center">
         <Link to="/" className="mr-6 flex items-center space-x-2">
           <div className="bg-gradient-hero p-2 rounded-lg shadow-soft">
